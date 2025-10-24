@@ -10,3 +10,5 @@ def Import(Amount, Date, Nec):
     cursor.execute(""" INSERT INTO finance (Amount, Date, Nec) VALUES (?, ?, ?)""", (Amount, Date, 1 if Nec else 0))
     connect.commit()
     print("ثبت شد.")
+
+Import (-10000, "2000-12-12", True)
