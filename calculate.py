@@ -3,27 +3,39 @@ import sqlite3
 connect = sqlite3.connect("database.db")
 cursor = connect.cursor()
 
-cursor.execute("SELECT Amount FROM finance")
-amounts = [row[0] for row in cursor.fetchall()]
+cursor.execute("SELECT Amount, Nec FROM finance")
+amounts = [row for row in cursor.fetchall()]
 
-def cal (amounts):
-    Income = []
-    Expense = []
-    for i in amounts:
-        if i > 0:
-            Income.append(i)
+def arrange (amounts):
+    Income = {"Necessary": [], "Not_Necessary": []}
+    Expense = {"Necessary": [], "Not_Necessary": []}
+    for amount, nec in amounts:
+        if amount > 0:
+            if nec == 1:
+                Income["Necessary"].append(amount)
+            else:
+                Income["Not_Necessary"].append(amount)
         else:
-            Expense.append(i)
+            if nec == 1:
+                Expense["Necessary"].append(amount)
+            else:
+                Expense["Not_Necessary"].append(amount)
+    return Income, Expense
 
-    sum_income = sum(Income)
-    sum_expense = sum(Expense)
-    average_income = sum_income/len(Income)
-    average_expense = sum_expense/len(Expense)
-    
+def cal (data):
+    result = {}
+    for key, value in data.items():
+        total = sum(value)
+        avrage = total/len(value) if value else 0
+        result[key] = {"total": total, "average": avrage}
+    result["all"] = {
+        "total": sum([sum(v) for v in data.values()]),
+        "average": sum([sum(v) for v in data.values()]) / sum([len(v) for v in data.values()]) if sum([len(v) for v in data.values()]) > 0 else 0}
+    return result
 
 
-    #print (average_income)
-    #print (average_expense)
-
-
-cal (amounts)
+Income , Expense = arrange(amounts)
+Income_cal = cal(Income)
+Expense_cal = cal(Expense)
+print(Income_cal)
+print(Expense_cal)
