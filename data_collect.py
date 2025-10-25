@@ -32,11 +32,8 @@ def data_collect():
     nec = True if nec_input in ['yes', 'y'] else False
     
     # Return dictionary
-    return {
-        "Amount": amount,
-        "Date": date_input,
-        "Nec": nec
-    }
-data = data_collect()
+    return amount,date_input,nec
 
-print(data)
+
+if __name__ == "__main__":
+    main()

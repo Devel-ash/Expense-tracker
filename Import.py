@@ -1,4 +1,6 @@
 import sqlite3
+from data_collect import data_collect
+
 
 connect = sqlite3.connect("database.db")
 cursor = connect.cursor()
@@ -11,4 +13,5 @@ def Import(Amount, Date, Nec):
     connect.commit()
     print("ثبت شد.")
 
-#Import (-12000, "2000-12-12", True)
+x , y , z = data_collect()
+Import (x, y, z)
