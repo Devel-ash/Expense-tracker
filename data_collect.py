@@ -1,53 +1,61 @@
 import re
 
 def data_collect():
-     # Regex for a valid number (positive or negative, int or float)
+    #amount regex
     amount_pattern = re.compile(r'^-?\d+(\.\d+)?$')
-     # Regex for date format YYYY-MM-DD
+    #date regex
     date_pattern = re.compile(r'^\d{4}-\d{2}-\d{2}$')
-     # Regex for yes/no answers
+    #necessasity regex
     nec_pattern = re.compile(r'^(yes|no|y|n)$', re.IGNORECASE)
     
-    # Get amount without crash
+    # Get amount safely
     while True:
-        amount_input = input("Enter amount (negative = expense, positive = salary, not zero): ").strip()
-        if not amount_pattern.match(amount_input):
-            print("Invalid amount format! Try again.")
-            continue
         try:
+            amount_input = input("Enter amount (negative = expense, positive = salary, not zero): ").strip()
+            if not amount_pattern.match(amount_input):
+                raise ValueError("Invalid amount format!")
+            
             amount = float(amount_input)
             if amount == 0:
-                print("Amount cannot be zero! Try again.")
-                continue
-            break
-        except ValueError:
-            print("Invalid input! Please enter a number.")
+                raise ValueError("Amount cannot be zero!")
+            
+            break  # valid amount, exit loop
+        except ValueError as e:
+            print(e)
     
     print("This is recorded as a SALARY." if amount > 0 else "This is recorded as an EXPENSE.")
     
-    # Get date without crash
+    # Get date safely
     while True:
-        date_input = input("Enter date (YYYY-MM-DD): ").strip()
-        if date_pattern.match(date_input):
+        try:
+            date_input = input("Enter date (YYYY-MM-DD): ").strip()
+            if not date_pattern.match(date_input):
+                raise ValueError("Invalid date format!")
+            # Optional: further check for valid month/day
+            year, month, day = map(int, date_input.split("-"))
+            if not (1 <= month <= 12 and 1 <= day <= 31):
+                raise ValueError("Invalid month/day in date!")
             break
-        else:
-            print("Invalid date format! Try again.")
+        except ValueError as e:
+            print(e)
     
-    # Get necessity without crash
+    # Get necessity safely
     while True:
-        nec_input = input("Is this a necessity? (yes/no): ").strip().lower()
-        if nec_pattern.match(nec_input):
+        try:
+            nec_input = input("Is this a necessity? (yes/no): ").strip().lower()
+            if not nec_pattern.match(nec_input):
+                raise ValueError("Invalid input! Type yes or no.")
             nec = True if nec_input in ['yes', 'y'] else False
             break
-        else:
-            print("Invalid input! Type yes or no.")
+        except ValueError as e:
+            print(e)
     
+    return {
+        "Amount": amount,
+        "Date": date_input,
+        "Nec": nec
+    }
 
-    nec = True if nec_input in ['yes', 'y'] else False
-    
-    # Return dictionary
-    return amount,date_input,nec
-
-
-if __name__ == "__main__":
-    data_collect()
+# Call the function
+data = data_collect()
+print(data)
