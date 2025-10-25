@@ -1,0 +1,42 @@
+import re
+
+def data_collect():
+    # Regex for a valid number (positive or negative, int or float)
+    amount_pattern = re.compile(r'^-?\d+(\.\d+)?$')
+    # Regex for date format YYYY-MM-DD
+    date_pattern = re.compile(r'^\d{4}-\d{2}-\d{2}$')
+    # Regex for yes/no answers
+    nec_pattern = re.compile(r'^(yes|no|y|n)$', re.IGNORECASE)
+    
+    # Get amount
+    amount_input = input("Enter amount (negative = expense, positive = salary): ").strip()
+    if not amount_pattern.match(amount_input):
+        print("Invalid amount format!")
+        return None
+    
+    amount = float(amount_input)
+    print("This is recorded as a SALARY." if amount > 0 else "This is recorded as an EXPENSE.")
+    
+    # Get date
+    date_input = input("Enter date (YYYY-MM-DD): ").strip()
+    if not date_pattern.match(date_input):
+        print("Invalid date format!")
+        return None
+    
+    # Get necessity
+    nec_input = input("Is this a necessity? (yes/no): ").strip().lower()
+    if not nec_pattern.match(nec_input):
+        print("Invalid response for necessity!")
+        return None
+    
+    nec = True if nec_input in ['yes', 'y'] else False
+    
+    # Return dictionary
+    return {
+        "Amount": amount,
+        "Date": date_input,
+        "Nec": nec
+    }
+data = data_collect()
+
+print(data)
