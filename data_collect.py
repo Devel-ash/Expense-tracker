@@ -36,4 +36,4 @@ def data_collect():
 
 
 if __name__ == "__main__":
-    main()
+    data_collect()
