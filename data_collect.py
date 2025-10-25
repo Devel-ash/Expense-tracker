@@ -50,12 +50,4 @@ def data_collect():
         except ValueError as e:
             print(e)
     
-    return {
-        "Amount": amount,
-        "Date": date_input,
-        "Nec": nec
-    }
-
-# Call the function
-data = data_collect()
-print(data)
+    return amount, date_input, nec
