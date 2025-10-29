@@ -46,11 +46,7 @@ def income_collect():
         except ValueError as e:
             print(e)
 
-    return {
-        "Amount": amount,
-        "Date": date_input,
-        "Nec": nec
-    }
+    return amount, date_input, nec
 
 
 #Get Bank Info
@@ -121,13 +117,7 @@ def reserve_collect():
             continue
         break
 
-    return {
-        "Bank Name": bank_name,
-        "Deposit": deposit,
-        "APR": apr,
-        "APR Type": apr_type,
-        "Days": days
-    }
+    return bank_name, deposit, has_apr, apr, apr_type, days
 
 
 #Function To Show And Combine Everything
