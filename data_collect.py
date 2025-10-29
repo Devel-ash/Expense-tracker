@@ -1,143 +1,153 @@
 import re
 
-def data_collect():
-    #amount regex
+#Get Expense/Salary Info
+def income_collect():
+    #Amount regex
     amount_pattern = re.compile(r'^-?\d+(\.\d+)?$')
-    #date regex
+    #Date regex
     date_pattern = re.compile(r'^\d{4}-\d{2}-\d{2}$')
-    #necessity regex
+    #Necessity regex
     nec_pattern = re.compile(r'^(yes|no|y|n)$', re.IGNORECASE)
-    #APR input
-    rate_pattern = re.compile(r'^\d+(\.\d+)?$')  
-    
-    #Get Expense or Salary
+
+    #Get amount
     while True:
         try:
-            amount_input = input("Enter amount (negative = expense, positive = salary, not zero): ").strip()
+            amount_input = input("Enter amount (negative = expense, positive = salary): ").strip()
             if not amount_pattern.match(amount_input):
                 raise ValueError("Invalid amount format!")
             
             amount = float(amount_input)
             if amount == 0:
-                raise ValueError("Amount cannot be zero!")
+                raise ValueError("Amount cannot be zero.")
             
+            print("This is recorded as a SALARY." if amount > 0 else "This is recorded as an EXPENSE.")
             break
         except ValueError as e:
             print(e)
-    
-    print("This is recorded as a SALARY." if amount > 0 else "This is recorded as an EXPENSE.")
-    
-    #Get Date
+
+    #Get date
     while True:
         try:
             date_input = input("Enter date (YYYY-MM-DD): ").strip()
             if not date_pattern.match(date_input):
-                raise ValueError("Invalid date format!")
-            
-            year, month, day = map(int, date_input.split("-"))
-            if not (1 <= month <= 12 and 1 <= day <= 31):
-                raise ValueError("Invalid month/day in date!")
-            
+                raise ValueError("Invalid date format! Use YYYY-MM-DD.")
             break
         except ValueError as e:
             print(e)
-    
-    #Get Necessity
+
+    #Get necessity
     while True:
         try:
             nec_input = input("Is this a necessity? (yes/no): ").strip().lower()
             if not nec_pattern.match(nec_input):
-                raise ValueError("Invalid input! Type yes or no.")
-            nec = True if nec_input in ['yes', 'y'] else False
+                raise ValueError("Please answer 'yes' or 'no'.")
+            nec = nec_input in ['yes', 'y']
             break
         except ValueError as e:
             print(e)
-    
-    #Bank Section
-    bank_name = input("Enter bank name: ").strip()
-    
-    #Deposit amount
-    while True:
-        try:
-            deposit_input = input("Enter how much you put in the bank: ").strip()
-            if not rate_pattern.match(deposit_input):
-                raise ValueError("Invalid number format for deposit!")
-            deposit = float(deposit_input)
-            if deposit <= 0:
-                raise ValueError("Deposit must be greater than zero!")
-            break
-        except ValueError as e:
-            print(e)
-    
-    #Does user get APR?
-    while True:
-        try:
-            apr_input = input("Do you get interest (APR)? (yes/no): ").strip().lower()
-            if not nec_pattern.match(apr_input):
-                raise ValueError("Invalid input! Type yes or no.")
-            gets_apr = apr_input in ['yes', 'y']
-            break
-        except ValueError as e:
-            print(e)
-    
-    apr_rate = None
-    apr_type = None
-    apr_days = None
-    
-    if gets_apr:
-        #APR rate
-        while True:
-            try:
-                apr_rate_input = input("Enter the APR rate (%): ").strip()
-                if not rate_pattern.match(apr_rate_input):
-                    raise ValueError("Invalid APR format! Must be a number.")
-                apr_rate = float(apr_rate_input)
-                if apr_rate <= 0:
-                    raise ValueError("APR must be greater than zero!")
-                break
-            except ValueError as e:
-                print(e)
-        
-        #APR type (monthly or yearly)
-        while True:
-            try:
-                apr_type_input = input("Is this APR monthly or yearly? (monthly/yearly): ").strip().lower()
-                if apr_type_input not in ['monthly', 'yearly']:
-                    raise ValueError("Please type 'monthly' or 'yearly'.")
-                apr_type = apr_type_input
-                break
-            except ValueError as e:
-                print(e)
-        
-        #Number of days
-        while True:
-            try:
-                days_input = input("Enter number of days you’ll be getting interest: ").strip()
-                if not re.match(r'^\d+$', days_input):
-                    raise ValueError("Days must be a whole number.")
-                apr_days = int(days_input)
-                if apr_days <= 0:
-                    raise ValueError("Days must be greater than zero.")
-                break
-            except ValueError as e:
-                print(e)
-    
-    #Return everything
+
     return {
         "Amount": amount,
         "Date": date_input,
-        "Nec": nec,
-        "Bank": {
-            "Name": bank_name,
-            "Deposit": deposit,
-            "Gets_APR": gets_apr,
-            "Rate": apr_rate,
-            "Rate_Type": apr_type,
-            "Days": apr_days
-        }
+        "Nec": nec
     }
 
-#Run the function
-data = data_collect()
-print("\nCollected Data:")
-print(data)
+
+#Get Bank Info
+def reserve_collect():
+    bank_pattern = re.compile(r'^[A-Za-z ]+$')
+    number_pattern = re.compile(r'^\d+(\.\d+)?$')
+
+    #Bank name
+    while True:
+        bank_name = input("Enter your bank name: ").strip()
+        if not bank_name:
+            print("Bank name cannot be empty.")
+            continue
+        if not bank_pattern.match(bank_name):
+            print("Bank name can only contain letters and spaces.")
+            continue
+        break
+
+    #Deposit amount
+    while True:
+        deposit_input = input("Enter the amount you put in the bank: ").strip()
+        if not number_pattern.match(deposit_input):
+            print("Invalid amount format! Please enter a number.")
+            continue
+        deposit = float(deposit_input)
+        if deposit <= 0:
+            print("Amount must be greater than zero.")
+            continue
+        break
+
+    #APR
+    has_apr = input("Do you get an annual rate (APR)? (yes/no): ").strip().lower()
+    if has_apr not in ["yes", "y"]:
+        apr = 0.0
+        apr_type = None
+    else:
+        while True:
+            apr_input = input("Enter your APR percentage (e.g., 5 for 5%): ").strip()
+            if not number_pattern.match(apr_input):
+                print("Invalid APR format! Please enter a number.")
+                continue
+            apr = float(apr_input)
+            if apr <= 0:
+                print("APR must be greater than zero.")
+                continue
+            break
+
+        while True:
+            apr_type = input("Is it monthly or annually? (m/a): ").strip().lower()
+            if apr_type in ["m", "monthly"]:
+                apr_type = "Monthly"
+                break
+            elif apr_type in ["a", "annually"]:
+                apr_type = "Annually"
+                break
+            else:
+                print("Invalid input. Type 'm' for monthly or 'a' for annually.")
+
+    #Number of days
+    while True:
+        days_input = input("Enter the number of days you'll keep the money in the bank: ").strip()
+        if not number_pattern.match(days_input):
+            print("Invalid format! Please enter a number.")
+            continue
+        days = int(float(days_input))
+        if days <= 0:
+            print("Days must be greater than zero.")
+            continue
+        break
+
+    return {
+        "Bank Name": bank_name,
+        "Deposit": deposit,
+        "APR": apr,
+        "APR Type": apr_type,
+        "Days": days
+    }
+
+
+#Function To Show And Combine Everything
+def main():
+    print("\n--- Expense/Salary Section ---")
+    finance_data = income_collect()
+    
+    print("\n--- Bank Section ---")
+    bank_data = reserve_collect()
+
+    combined = {
+        "Finance Data": finance_data,
+        "Bank Data": bank_data
+    }
+
+    print("\n✅ All data collected successfully:")
+    print(combined)
+    return combined
+
+
+#Run everything
+if __name__ == "__main__":
+    main()
