@@ -73,5 +73,5 @@ Expense_cal = cal_income(Expense)
 
 banks = arrange_banks (rows2, columns2)
 reserve = cal_reserve(banks, Income_cal, Expense_cal)
-print(banks)
-print(reserve)
+#print(banks)
+#print(reserve)
