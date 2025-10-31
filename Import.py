@@ -21,8 +21,9 @@ def Import_income_expense():
     Amount, name, Date, Nec = income_collect()
     cursor1.execute(""" INSERT INTO finance (Amount, Bank_Name, Date, Nec) VALUES (?, ?, ?, ?)""", (Amount, name, Date, 1 if Nec else 0))
     connect1.commit()
-    print("ثبت شد.")
     cal_bank ()
+
+        
 
 def Import_bank():
     Bank_Name, Deposit, Gets_APR, Rate, Rate_Type, Days = bank_collect()
