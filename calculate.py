@@ -1,10 +1,10 @@
 import sqlite3
 
-connect = sqlite3.connect("database.db")
-cursor = connect.cursor()
+connect1 = sqlite3.connect("database.db")
+cursor1 = connect1.cursor()
 
-cursor.execute("SELECT Amount, Nec FROM finance")
-amounts = [row for row in cursor.fetchall()]
+cursor1.execute("SELECT Amount, Nec FROM finance")
+amounts = [row for row in cursor1.fetchall()]
 
 connect2 = sqlite3.connect("banks.db")
 cursor2 = connect2.cursor()
@@ -57,13 +57,23 @@ def cal_reserve(banks, Income_cal, Expense_cal):
     return reserve
 
 
-#def cal_bank ():
+def cal_bank ():
+    cursor1.execute("SELECT Amount, Bank_Name FROM finance ORDER BY id DESC LIMIT 1")
+    last_row = cursor1.fetchone()
+    if not last_row:
+        print("⚠️ هیچ تراکنشی در جدول وجود ندارد.")
+    amount, bank_name= last_row
 
+    cursor2.execute("SELECT Deposit FROM bank WHERE Bank_Name = ?", (bank_name,))
+    bank = cursor2.fetchone()
+    if bank:
+        new_deposit = bank[0] + amount
+        cursor2.execute("UPDATE bank SET Deposit = ? WHERE Bank_Name = ?", (new_deposit, bank_name))
+        print(f"موجودی {bank_name} به {new_deposit} تغییر یافت.")
+    else:
+        print("بانک وجود ندارد")
 
-
-
-
-
+    connect2.commit()
 
 Income , Expense = arrange_income(amounts)
 Income_cal = cal_income(Income)

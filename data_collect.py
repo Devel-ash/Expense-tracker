@@ -2,6 +2,9 @@ import re
 
 #Get Expense/Salary Info
 def income_collect():
+    from calculate import banks
+    banks_names =  ', '.join(sorted([info['Bank_Name'] for info in banks.values()]))
+
     #Amount regex
     amount_pattern = re.compile(r'^-?\d+(\.\d+)?$')
     #Date regex
@@ -24,6 +27,17 @@ def income_collect():
             break
         except ValueError as e:
             print(e)
+
+    #Bank name
+    while True:
+        name = input(f"Enter your bank name ({banks_names}): ").strip()
+        if not name:
+            print("Bank name cannot be empty.")
+            continue
+        if name not in banks_names:
+            print(f"Bank name can only be {banks_names}.")
+            continue
+        break
 
     #Get date
     while True:
@@ -50,11 +64,11 @@ def income_collect():
         except ValueError as e:
             print(e)
 
-    return amount, date_input, nec
+    return amount, name, date_input, nec
 
 
 #Get Bank Info
-def reserve_collect():
+def bank_collect():
     bank_pattern = re.compile(r'^[A-Za-z ]+$')
     number_pattern = re.compile(r'^\d+(\.\d+)?$')
 
@@ -84,8 +98,9 @@ def reserve_collect():
     #APR
     has_apr = input("Do you get an annual rate (APR)? (yes/no): ").strip().lower()
     if has_apr not in ["yes", "y"]:
-        apr = 0.0
+        apr = None
         apr_type = None
+        days = None
     else:
         while True:
             apr_input = input("Enter your APR percentage (e.g., 5 for 5%): ").strip()
@@ -109,23 +124,23 @@ def reserve_collect():
             else:
                 print("Invalid input. Type 'm' for monthly or 'a' for annually.")
 
-    #Number of days
-    while True:
-        days_input = input("Enter the number of days you'll keep the money in the bank: ").strip()
-        if not number_pattern.match(days_input):
-            print("Invalid format! Please enter a number.")
-            continue
-        days = int(float(days_input))
-        if days <= 0:
-            print("Days must be greater than zero.")
-            continue
-        break
+        #Number of days
+        while True:
+            days_input = input("Enter the number of days you'll keep the money in the bank: ").strip()
+            if not number_pattern.match(days_input):
+                print("Invalid format! Please enter a number.")
+                continue
+            days = int(float(days_input))
+            if days <= 0:
+                print("Days must be greater than zero.")
+                continue
+            break
 
     return bank_name, deposit, has_apr, apr, apr_type, days
 
 
 #Function To Show And Combine Everything
-def main():
+#def main():
     print("\n--- Expense/Salary Section ---")
     finance_data = income_collect()
     
