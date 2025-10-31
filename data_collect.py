@@ -31,6 +31,10 @@ def income_collect():
             date_input = input("Enter date (YYYY-MM-DD): ").strip()
             if not date_pattern.match(date_input):
                 raise ValueError("Invalid date format! Use YYYY-MM-DD.")
+            
+            year, month, day = map(int, date_input.split("-"))
+            if not (1 <= month <= 12 and 1 <= day <= 31):
+                raise ValueError("Invalid month/day in date!")
             break
         except ValueError as e:
             print(e)
@@ -46,7 +50,11 @@ def income_collect():
         except ValueError as e:
             print(e)
 
-    return amount, date_input, nec
+    return {
+        "Amount": amount,
+        "Date": date_input,
+        "Nec": nec
+    }
 
 
 #Get Bank Info
@@ -117,7 +125,13 @@ def reserve_collect():
             continue
         break
 
-    return bank_name, deposit, has_apr, apr, apr_type, days
+    return {
+        "Bank Name": bank_name,
+        "Deposit": deposit,
+        "APR": apr,
+        "APR Type": apr_type,
+        "Days": days
+    }
 
 
 #Function To Show And Combine Everything
