@@ -3,7 +3,7 @@ import schedule
 import time
 from data_collect import income_collect
 from data_collect import bank_collect
-from calculate import check_income_expense
+
 
 
 
@@ -16,7 +16,7 @@ connect1.commit()
 connect2 = sqlite3.connect("banks.db")
 cursor2 = connect2.cursor()
 
-cursor2.execute(""" CREATE TABLE IF NOT EXISTS bank (Id INTEGER PRIMARY KEY AUTOINCREMENT, Bank_Name TEXT NOT NULL, Deposit REAL NOT NULL, Gets_APR INTEGER NOT NULL, Rate REAL, Rate_Type TEXT, Days INTEGER)""")
+cursor2.execute(""" CREATE TABLE IF NOT EXISTS bank (Id INTEGER PRIMARY KEY AUTOINCREMENT, Bank_Name TEXT NOT NULL, Deposit REAL NOT NULL, Date TEXT NOT NULL, Gets_APR INTEGER NOT NULL, Rate REAL, Rate_Type TEXT, Days INTEGER)""")
 connect2.commit()
 
 
@@ -30,16 +30,19 @@ def Import_income_expense():
         
 
 def Import_bank():
-    Bank_Name, Deposit, Gets_APR, Rate, Rate_Type, Days = bank_collect()
-    cursor2.execute(""" INSERT INTO bank (Bank_Name, Deposit, Gets_APR, Rate, Rate_Type, Days) VALUES (?, ?, ?, ?, ?, ?)""", (Bank_Name, Deposit, 1 if Gets_APR else 0, Rate, Rate_Type, Days))
+    Bank_Name, Deposit, Date, Gets_APR, Rate, Rate_Type, Days = bank_collect()
+    cursor2.execute(""" INSERT INTO bank (Bank_Name, Deposit, Date, Gets_APR, Rate, Rate_Type, Days) VALUES (?, ?, ?, ?, ?, ?, ?)""", (Bank_Name, Deposit, Date, 1 if Gets_APR else 0, Rate, Rate_Type, Days))
     connect2.commit()
     print("ثبت شد.")
+    from calculate import cal_rate
+    cal_rate()
 
 
 try:
-    #Import_bank()
-    Import_income_expense()
-    check_income_expense()
+    Import_bank()
+    #Import_income_expense()
+    #from calculate import check_income_expense
+    #check_income_expense()
 except Exception as e:
     print("خطا:", e)
 

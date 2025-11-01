@@ -126,7 +126,37 @@ def check_income_expense():
                 print("بانک وجود ندارد")
 
 
-#def cal_rate():
+def cal_rate():
+    cursor2.execute("SELECT * FROM bank WHERE Gets_APR = 1 ORDER BY Id DESC LIMIT 1")
+    row = cursor2.fetchone()
+    if not row:
+        print("ثبت شد")
+    else:
+        Id, Bank_Name, Deposit, Date, Gets_APR, Rate, Rate_Type, Days = row
+        if Rate_Type.lower() in ["a", "annually"] and Days >= 365:
+            profit_a = Deposit * (Rate/100)
+
+            cursor1.execute("INSERT INTO finance (Bank_Name, Amount, Date, Nec, Done) VALUES (? , ?, Date(?, '+1 year'), 1, 0)", (Bank_Name, profit_a, Date))
+            connect1.commit()
+
+        else:
+            profit_d = Deposit * (Rate/100) / 365
+            e = Days % 30
+            if e == 0 :
+                profit_m = profit_d * Days
+                #
+                
+
+            else:
+                profit_m = profit_d * (Days - e)
+                extra_profit = profit_d * e
+                #
+
+
+            
+
+
+
 
 
 
@@ -137,3 +167,4 @@ Expense_cal = cal_income(Expense)
 
 banks = arrange_banks (rows2, columns2)
 reserve = cal_reserve(banks, Income_cal, Expense_cal)
+

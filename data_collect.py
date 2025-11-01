@@ -71,6 +71,7 @@ def income_collect():
 def bank_collect():
     bank_pattern = re.compile(r'^[A-Za-z ]+$')
     number_pattern = re.compile(r'^\d+(\.\d+)?$')
+    date_pattern = re.compile(r'^\d{4}-\d{2}-\d{2}$')
 
     #Bank name
     while True:
@@ -94,6 +95,21 @@ def bank_collect():
             print("Amount must be greater than zero.")
             continue
         break
+
+
+    #Get date
+    while True:
+        try:
+            date_input = input("Enter date (YYYY-MM-DD): ").strip()
+            if not date_pattern.match(date_input):
+                raise ValueError("Invalid date format! Use YYYY-MM-DD.")
+            
+            year, month, day = map(int, date_input.split("-"))
+            if not (1 <= month <= 12 and 1 <= day <= 31):
+                raise ValueError("Invalid month/day in date!")
+            break
+        except ValueError as e:
+            print(e)
 
     #APR
     has_apr = input("Do you get an annual rate (APR)? (yes/no): ").strip().lower()
@@ -136,9 +152,8 @@ def bank_collect():
                 continue
             break
         from calculate import cal_rate
-        cal_rate()
 
-    return bank_name, deposit, has_apr, apr, apr_type, days
+    return bank_name, deposit, date_input, has_apr, apr, apr_type, days
 
 
 #Function To Show And Combine Everything
@@ -158,7 +173,6 @@ def bank_collect():
     print(combined)
     return combined
 
-
 #Run everything
-if __name__ == "__main__":
-    main()
+#if __name__ == "__main__":
+    #main()
