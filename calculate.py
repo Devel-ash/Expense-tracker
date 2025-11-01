@@ -58,37 +58,82 @@ def cal_reserve(banks, Income_cal, Expense_cal):
 
 
 def cal_bank ():
-    cursor1.execute("SELECT Amount, Bank_Name FROM finance ORDER BY Id DESC LIMIT 1")
+    from datetime import date
+    today = date.today()
+
+    cursor1.execute("SELECT Id, Amount, Bank_Name, Date FROM finance ORDER BY Id DESC LIMIT 1")
     last_row = cursor1.fetchone()
     if not last_row:
-        print("⚠️ هیچ تراکنشی در جدول وجود ندارد.")
+        print("هیچ تراکنشی در جدول وجود ندارد.")
     
-    amount, bank_name= last_row
-
-    cursor2.execute("SELECT Deposit FROM bank WHERE Bank_Name = ?", (bank_name,))
-    bank = cursor2.fetchone()
-    if bank:
-        new_deposit = bank[0] + amount
-        if new_deposit >= 0:
-            cursor2.execute("UPDATE bank SET Deposit = ? WHERE Bank_Name = ?", (new_deposit, bank_name))
-            connect2.commit()
-            print(f"موجودی {bank_name} به {new_deposit} تغییر یافت.")
+    Id, amount, bank_name, target_date_str = last_row
+    target_date = date.fromisoformat(target_date_str)
+    if today >= target_date:
+        cursor2.execute("SELECT Deposit FROM bank WHERE Bank_Name = ?", (bank_name,))
+        bank = cursor2.fetchone()
+        if bank:
+            new_deposit = bank[0] + amount
+            if new_deposit >= 0:
+                cursor2.execute("UPDATE bank SET Deposit = ? WHERE Bank_Name = ?", (new_deposit, bank_name))
+                connect2.commit()
+                cursor1.execute("UPDATE finance SET Done = 1 WHERE Amount = ? AND Date = ? AND Bank_name = ? AND Id = ?", (amount, target_date, bank_name, Id))
+                connect1.commit()
+                print(f"موجودی {bank_name} به {new_deposit} در تاریخ {target_date} تغییر یافت")
+            else:
+                cursor1.execute("DELETE FROM finance WHERE Id = (SELECT Id FROM finance ORDER BY Id DESC LIMIT 1)")
+                connect1.commit()
+                print("موجودی حساب کافی نیست")
         else:
-            cursor1.execute("DELETE FROM finance WHERE Id = (SELECT Id FROM finance ORDER BY Id DESC LIMIT 1)")
-            connect1.commit()
-            print("موجودی حساب کافی نیست")
+            print("بانک وجود ندارد")
     else:
-        print("بانک وجود ندارد")
+        if amount < 0:
+            print(f"هزینه با مقدار {abs(amount)} در بانک {bank_name} به معوقات در تاریخ {target_date} اضافه شد.")
+        else:
+            print(f"درآمد با مقدار {amount} در بانک {bank_name} به معوقات در تاریخ {target_date} اضافه شد.")
 
-    
+
+
+def check_income_expense():
+    from datetime import date
+
+    cursor1.execute("SELECT Id, Amount, Bank_Name, Date FROM finance WHERE Done = 0")
+    rows = cursor1.fetchall()
+    if not rows:
+        print("هیچ تراکنشی در جدول وجود ندارد.")
+
+    today = date.today()
+
+    for row in rows:
+        Id, amount, bank_name, target_date_str = row
+        target_date = date.fromisoformat(target_date_str)
+
+        if today >= target_date:
+            cursor2.execute("SELECT Deposit FROM bank WHERE Bank_Name = ?", (bank_name,))
+            bank = cursor2.fetchone()
+            if bank:
+                new_deposit = bank[0] + amount
+                if new_deposit >= 0:
+                    cursor2.execute("UPDATE bank SET Deposit = ? WHERE Bank_Name = ?", (new_deposit, bank_name))
+                    connect2.commit()
+                    cursor1.execute("UPDATE finance SET Done = 1 WHERE Amount = ? AND Date = ? AND Bank_name = ? AND Id = ?", (amount, target_date, bank_name, Id))
+                    connect1.commit()
+                    print(f"موجودی {bank_name} به {new_deposit} در تاریخ {target_date} تغییر یافت")
+                else:
+                    cursor1.execute("DELETE FROM finance WHERE Id = ?", (Id))
+                    connect1.commit()
+                    print("موجودی حساب کافی نیست")
+            else:
+                print("بانک وجود ندارد")
+
+
+#def cal_rate():
+
+
+
 
 Income , Expense = arrange_income(amounts)
 Income_cal = cal_income(Income)
 Expense_cal = cal_income(Expense)
-#print(Income_cal)
-#print(Expense_cal)
 
 banks = arrange_banks (rows2, columns2)
 reserve = cal_reserve(banks, Income_cal, Expense_cal)
-#print(banks)
-#print(reserve)

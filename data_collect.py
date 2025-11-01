@@ -135,6 +135,8 @@ def bank_collect():
                 print("Days must be greater than zero.")
                 continue
             break
+        from calculate import cal_rate
+        cal_rate()
 
     return bank_name, deposit, has_apr, apr, apr_type, days
 

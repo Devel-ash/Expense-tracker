@@ -1,13 +1,16 @@
 import sqlite3
+import schedule
+import time
 from data_collect import income_collect
 from data_collect import bank_collect
-from calculate import cal_bank
+from calculate import check_income_expense
+
 
 
 connect1 = sqlite3.connect("database.db")
 cursor1 = connect1.cursor()
 
-cursor1.execute(""" CREATE TABLE IF NOT EXISTS finance (Id INTEGER PRIMARY KEY AUTOINCREMENT, Bank_Name TEXT NOT NULL, Amount REAL NOT NULL, Date TEXT NOT NULL, Nec INTEGER NOT NULL)""")
+cursor1.execute(""" CREATE TABLE IF NOT EXISTS finance (Id INTEGER PRIMARY KEY AUTOINCREMENT, Bank_Name TEXT NOT NULL, Amount REAL NOT NULL, Date TEXT NOT NULL, Nec INTEGER NOT NULL, Done INTEGER NOT NULL DEFAULT 0)""")
 connect1.commit()
 
 connect2 = sqlite3.connect("banks.db")
@@ -21,6 +24,7 @@ def Import_income_expense():
     Amount, name, Date, Nec = income_collect()
     cursor1.execute(""" INSERT INTO finance (Amount, Bank_Name, Date, Nec) VALUES (?, ?, ?, ?)""", (Amount, name, Date, 1 if Nec else 0))
     connect1.commit()
+    from calculate import cal_bank
     cal_bank ()
 
         
@@ -35,8 +39,15 @@ def Import_bank():
 try:
     #Import_bank()
     Import_income_expense()
+    check_income_expense()
 except Exception as e:
     print("خطا:", e)
+
+
+#schedule.every().day.at("00:00").do(check_income_expense)
+#while True:
+    #schedule.run_pending()
+    #time.sleep(60)
 
 connect1.close()
 connect2.close()
