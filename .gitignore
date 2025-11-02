@@ -1,0 +1,47 @@
+# --- Python basics ---
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pkl
+*.log
+
+# --- Virtual environment ---
+.venv/
+venv/
+env/
+ENV/
+*.env
+
+# --- IDE/project settings ---
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# --- Qt / PySide6 generated files ---
+# UI converted to Python files
+ui_*.py
+# Resource compiled files
+*_rc.py
+# Build or compiled UI cache
+build/
+dist/
+*.qrc~
+*.pro.user
+*.pro.user.*
+*.qbs.user
+*.qbs.user.*
+
+
+
+# But if they’re needed for the app to run, keep them tracked!
+
+# --- OS files ---
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- Misc ---
+*.bak
+*.tmp
