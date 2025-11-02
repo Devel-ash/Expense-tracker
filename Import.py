@@ -24,6 +24,7 @@ def Import_income_expense():
     Amount, name, Date, Nec = income_collect()
     cursor1.execute(""" INSERT INTO finance (Amount, Bank_Name, Date, Nec) VALUES (?, ?, ?, ?)""", (Amount, name, Date, 1 if Nec else 0))
     connect1.commit()
+    #print("ثبت شد.")
     from calculate import cal_bank
     cal_bank ()
 
@@ -33,7 +34,7 @@ def Import_bank():
     Bank_Name, Deposit, Date, Gets_APR, Rate, Rate_Type, Days = bank_collect()
     cursor2.execute(""" INSERT INTO bank (Bank_Name, Deposit, Date, Gets_APR, Rate, Rate_Type, Days) VALUES (?, ?, ?, ?, ?, ?, ?)""", (Bank_Name, Deposit, Date, 1 if Gets_APR else 0, Rate, Rate_Type, Days))
     connect2.commit()
-    print("ثبت شد.")
+    #print("ثبت شد.")
     from calculate import cal_rate
     cal_rate()
 
@@ -41,8 +42,6 @@ def Import_bank():
 try:
     Import_bank()
     #Import_income_expense()
-    #from calculate import check_income_expense
-    #check_income_expense()
 except Exception as e:
     print("خطا:", e)
 

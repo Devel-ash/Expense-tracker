@@ -30,7 +30,7 @@ def income_collect():
 
     #Bank name
     while True:
-        name = input(f"Enter your bank name ({banks_names}): ").strip()
+        name = input(f"Enter your bank name ({banks_names}): ").strip().lower()
         if not name:
             print("Bank name cannot be empty.")
             continue
@@ -75,7 +75,7 @@ def bank_collect():
 
     #Bank name
     while True:
-        bank_name = input("Enter your bank name: ").strip()
+        bank_name = input("Enter your bank name: ").strip().lower()
         if not bank_name:
             print("Bank name cannot be empty.")
             continue
@@ -151,7 +151,6 @@ def bank_collect():
                 print("Days must be greater than zero.")
                 continue
             break
-        from calculate import cal_rate
 
     return bank_name, deposit, date_input, has_apr, apr, apr_type, days
 

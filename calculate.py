@@ -90,7 +90,7 @@ def cal_bank ():
             print(f"هزینه با مقدار {abs(amount)} در بانک {bank_name} به معوقات در تاریخ {target_date} اضافه شد.")
         else:
             print(f"درآمد با مقدار {amount} در بانک {bank_name} به معوقات در تاریخ {target_date} اضافه شد.")
-
+    check_income_expense()
 
 
 def check_income_expense():
@@ -103,6 +103,7 @@ def check_income_expense():
 
     today = date.today()
 
+    printed = False
     for row in rows:
         Id, amount, bank_name, target_date_str = row
         target_date = date.fromisoformat(target_date_str)
@@ -124,6 +125,11 @@ def check_income_expense():
                     print("موجودی حساب کافی نیست")
             else:
                 print("بانک وجود ندارد")
+        #else:
+            #if not printed:
+                #print("تغییری در حساب داده نشد")
+                #printed = True
+            
 
 
 def cal_rate():
@@ -138,27 +144,30 @@ def cal_rate():
 
             cursor1.execute("INSERT INTO finance (Bank_Name, Amount, Date, Nec, Done) VALUES (? , ?, Date(?, '+1 year'), 1, 0)", (Bank_Name, profit_a, Date))
             connect1.commit()
+            print (f"سود حساب در بانک {Bank_Name} 365 روز دیگر به حسابتان واریز خواهد شد.")
 
         else:
-            profit_d = Deposit * (Rate/100) / 365
-            e = Days % 30
-            if e == 0 :
-                profit_m = profit_d * Days
-                #
-                
+            cursor2.execute("SELECT * FROM bank WHERE Gets_APR = 1 ORDER BY Id DESC LIMIT 1")
+            row = cursor2.fetchone()
 
-            else:
-                profit_m = profit_d * (Days - e)
-                extra_profit = profit_d * e
-                #
+            Id, Bank_Name, Deposit, Date, Gets_APR, Rate, Rate_Type, Days = row
 
+            profit_d = Deposit * (Rate / 100) / 365
+            full_months = Days // 30
+            extra_days = Days % 30
 
+            for i in range(1, full_months + 1):
+                profit_m = profit_d * 30
+                cursor1.execute(""" INSERT INTO finance (Bank_Name, Amount, Date, Nec, Done) VALUES (?, ?, DATE(?, '+' || ? || ' days'), 1, 0) """, (Bank_Name, profit_m, Date, i * 30))
+
+            if extra_days > 0:
+                profit_extra = profit_d * extra_days
+                cursor1.execute(""" INSERT INTO finance (Bank_Name, Amount, Date, Nec, Done) VALUES (?, ?, DATE(?, '+' || ? || ' days'), 1, 0) """, (Bank_Name, profit_extra, Date, full_months * 30 + extra_days))
             
-
-
-
-
-
+            connect1.commit()
+            print (f"سود حساب در بانک {Bank_Name} به مدت {Days} روز به صورت ماهانه واریز خواهد شد.")
+            
+    check_income_expense()
 
 
 Income , Expense = arrange_income(amounts)
