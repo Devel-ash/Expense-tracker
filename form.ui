@@ -24,17 +24,17 @@
      </rect>
     </property>
     <property name="toolTip">
-     <string>Toman</string>
+     <string/>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>2</number>
     </property>
     <widget class="QWidget" name="income_expense">
      <widget class="QLabel" name="amount_label">
       <property name="geometry">
        <rect>
-        <x>38</x>
-        <y>40</y>
+        <x>30</x>
+        <y>70</y>
         <width>111</width>
         <height>16</height>
        </rect>
@@ -46,8 +46,8 @@
      <widget class="QPushButton" name="add_record_button">
       <property name="geometry">
        <rect>
-        <x>38</x>
-        <y>410</y>
+        <x>40</x>
+        <y>460</y>
         <width>100</width>
         <height>32</height>
        </rect>
@@ -59,8 +59,8 @@
      <widget class="QLabel" name="necessity_label">
       <property name="geometry">
        <rect>
-        <x>38</x>
-        <y>300</y>
+        <x>40</x>
+        <y>370</y>
         <width>71</width>
         <height>16</height>
        </rect>
@@ -72,8 +72,8 @@
      <widget class="QLabel" name="date_label">
       <property name="geometry">
        <rect>
-        <x>38</x>
-        <y>240</y>
+        <x>40</x>
+        <y>310</y>
         <width>58</width>
         <height>16</height>
        </rect>
@@ -85,8 +85,8 @@
      <widget class="QLabel" name="bank_label">
       <property name="geometry">
        <rect>
-        <x>38</x>
-        <y>140</y>
+        <x>30</x>
+        <y>180</y>
         <width>58</width>
         <height>16</height>
        </rect>
@@ -98,37 +98,46 @@
      <widget class="QComboBox" name="bank_choose_field">
       <property name="geometry">
        <rect>
-        <x>28</x>
-        <y>170</y>
+        <x>30</x>
+        <y>220</y>
         <width>271</width>
         <height>41</height>
        </rect>
+      </property>
+      <property name="placeholderText">
+       <string/>
       </property>
      </widget>
      <widget class="QLineEdit" name="amount_entry_field">
       <property name="geometry">
        <rect>
-        <x>38</x>
-        <y>80</y>
+        <x>40</x>
+        <y>120</y>
         <width>251</width>
         <height>21</height>
        </rect>
       </property>
       <property name="toolTip">
-       <string>Toman</string>
+       <string/>
       </property>
       <property name="inputMask">
        <string/>
+      </property>
+      <property name="placeholderText">
+       <string>Toman</string>
       </property>
      </widget>
      <widget class="QDateEdit" name="date_selector_income_expense">
       <property name="geometry">
        <rect>
-        <x>138</x>
-        <y>240</y>
+        <x>140</x>
+        <y>310</y>
         <width>91</width>
         <height>22</height>
        </rect>
+      </property>
+      <property name="displayFormat">
+       <string>M/d/yyyy</string>
       </property>
      </widget>
      <widget class="QTableView" name="sql_tableview">
@@ -145,7 +154,7 @@
       <property name="geometry">
        <rect>
         <x>130</x>
-        <y>290</y>
+        <y>360</y>
         <width>111</width>
         <height>41</height>
        </rect>
@@ -165,7 +174,7 @@
       <property name="geometry">
        <rect>
         <x>200</x>
-        <y>410</y>
+        <y>460</y>
         <width>131</width>
         <height>32</height>
        </rect>
@@ -250,6 +259,9 @@
         <height>21</height>
        </rect>
       </property>
+      <property name="placeholderText">
+       <string>Melli, Mellat, Blu, etc..</string>
+      </property>
      </widget>
      <widget class="QComboBox" name="apr_choose_field">
       <property name="geometry">
@@ -259,6 +271,9 @@
         <width>121</width>
         <height>32</height>
        </rect>
+      </property>
+      <property name="placeholderText">
+       <string/>
       </property>
       <item>
        <property name="text">
@@ -292,6 +307,12 @@
         <width>113</width>
         <height>21</height>
        </rect>
+      </property>
+      <property name="toolTip">
+       <string/>
+      </property>
+      <property name="placeholderText">
+       <string>Toman</string>
       </property>
      </widget>
      <widget class="QLabel" name="days_label">
@@ -346,7 +367,7 @@
        <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
       </property>
       <property name="displayFormat">
-       <string>mm/dd/yyyy</string>
+       <string>M/d/yyyy</string>
       </property>
       <property name="calendarPopup">
        <bool>true</bool>
@@ -383,6 +404,9 @@
         <width>111</width>
         <height>21</height>
        </rect>
+      </property>
+      <property name="placeholderText">
+       <string>5%</string>
       </property>
      </widget>
      <widget class="QPushButton" name="back_to_summary_bank_account_button">
@@ -427,6 +451,9 @@
        <property name="text">
         <string>yes</string>
        </property>
+       <property name="checked">
+        <bool>false</bool>
+       </property>
       </widget>
       <widget class="QRadioButton" name="noradio">
        <property name="geometry">
@@ -439,6 +466,9 @@
        </property>
        <property name="text">
         <string>no</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
        </property>
       </widget>
      </widget>
