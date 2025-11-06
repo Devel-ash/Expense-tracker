@@ -60,6 +60,7 @@ class MainWindow(QMainWindow):
 
         self.load_finance_data()
         self.load_bank_data()
+        self.update_summary()
         self.load_banks_into_combobox()
 
     def goto_income_expense(self):
@@ -107,7 +108,7 @@ class MainWindow(QMainWindow):
         amount = self.ui.amount_entry_field.text().strip()
         bank = self.ui.bank_choose_field.currentText()
         date = self.ui.date_selector_income_expense.date().toString("yyyy-MM-dd")
-        necessity = self.ui.necessity_choose_field.currentText()
+        necessity = 1 if self.ui.necessity_choose_field.currentText() == "Yes" else 0
 
         if not amount or not bank:
             QMessageBox.warning(self, "خطا", "لطفاً همه فیلدها را پر کنید.")
@@ -132,6 +133,7 @@ class MainWindow(QMainWindow):
             connect1.commit()
             import calculate
             calculate.cal_bank()
+            self.load_bank_data()
             connect1.close()
 
             if amount > 0:
@@ -140,6 +142,7 @@ class MainWindow(QMainWindow):
                 QMessageBox.information(self, "ثبت موفق", "هزینه جدید با موفقیت ثبت شد.")
             self.load_finance_data()
             self.clear_inputs()
+            self.update_summary()
 
         except Exception as e:
             QMessageBox.critical(self, "خطا در درج داده", str(e))
@@ -212,12 +215,14 @@ class MainWindow(QMainWindow):
             connect2.commit()
             import calculate
             calculate.cal_rate()
+            self.load_finance_data()
             connect2.close()
 
             QMessageBox.information(self, "ثبت موفق", "بانک جدید با موفقیت ثبت شد.")
             self.load_bank_data()
             self.load_banks_into_combobox()
             self.clear_bank_inputs()
+            self.update_summary()
 
         except Exception as e:
             QMessageBox.critical(self, "خطا در ثبت بانک", str(e))
@@ -245,6 +250,26 @@ class MainWindow(QMainWindow):
         self.ui.apr_choose_field.setCurrentIndex(0)
         self.ui.days_spinbox.setValue(0)
         self.ui.date_selector_bank.setDate(QDate.currentDate())
+
+
+    def update_summary(self):
+        try:
+            conn1 = sqlite3.connect("database.db")
+            cur1 = conn1.cursor()
+            cur1.execute("SELECT IFNULL(SUM(Amount), 0) FROM finance WHERE Amount > 0")
+            total_income = cur1.fetchone()[0] or 0
+            cur1.execute("SELECT IFNULL(SUM(ABS(Amount)), 0) FROM finance WHERE Amount < 0 AND Nec = 1")
+            total_necessary_expense = cur1.fetchone()[0] or 0
+            cur1.execute("SELECT IFNULL(SUM(ABS(Amount)), 0) FROM finance WHERE Amount < 0 AND Nec = 0")
+            total_unnecessary_expense = cur1.fetchone()[0] or 0
+            conn1.close()
+            total_expense = total_necessary_expense + total_unnecessary_expense
+            self.ui.total_revenue_number_output.setText(f"{total_income:,.0f} تومان")
+            self.ui.total_necessary_spending_number_output.setText(f"{total_necessary_expense:,.0f} تومان")
+            self.ui.total_unnecessary_spendingnumber_holder.setText(f"{total_unnecessary_expense:,.0f} تومان")
+            self.ui.total_spending_number_holder.setText(f"{total_expense:,.0f} تومان")
+        except Exception as e:
+            print("خطا در به‌روزرسانی صفحه Summary:", e)
 
 
 
