@@ -137,7 +137,7 @@ class MainWindow(QMainWindow):
             return
 
         try:
-            deposit = float(deposit_text)
+            deposit = float(deposit)
         except ValueError:
             QMessageBox.warning(self, "خطا", "لطفاً مبلغ سپرده را به عدد وارد کنید.")
             return
