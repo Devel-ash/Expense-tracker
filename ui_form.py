@@ -67,6 +67,9 @@ class Ui_MainWindow(object):
         self.necessity_choose_field.addItem("")
         self.necessity_choose_field.setObjectName(u"necessity_choose_field")
         self.necessity_choose_field.setGeometry(QRect(130, 290, 111, 41))
+        self.back_to_summary_income_expense_button = QPushButton(self.income_expense)
+        self.back_to_summary_income_expense_button.setObjectName(u"back_to_summary_income_expense_button")
+        self.back_to_summary_income_expense_button.setGeometry(QRect(639, 460, 131, 32))
         self.stackedWidget.addWidget(self.income_expense)
         self.bank_account = QWidget()
         self.bank_account.setObjectName(u"bank_account")
@@ -81,7 +84,7 @@ class Ui_MainWindow(object):
         self.deposit_amount_label.setGeometry(QRect(40, 110, 111, 16))
         self.update_balances_button = QPushButton(self.bank_account)
         self.update_balances_button.setObjectName(u"update_balances_button")
-        self.update_balances_button.setGeometry(QRect(190, 430, 111, 32))
+        self.update_balances_button.setGeometry(QRect(190, 430, 121, 32))
         self.gets_apr_label = QLabel(self.bank_account)
         self.gets_apr_label.setObjectName(u"gets_apr_label")
         self.gets_apr_label.setGeometry(QRect(40, 230, 71, 16))
@@ -123,6 +126,9 @@ class Ui_MainWindow(object):
         self.apr_rate_entry_field = QLineEdit(self.bank_account)
         self.apr_rate_entry_field.setObjectName(u"apr_rate_entry_field")
         self.apr_rate_entry_field.setGeometry(QRect(170, 280, 111, 21))
+        self.back_to_summary_bank_account_button = QPushButton(self.bank_account)
+        self.back_to_summary_bank_account_button.setObjectName(u"back_to_summary_bank_account_button")
+        self.back_to_summary_bank_account_button.setGeometry(QRect(640, 470, 131, 32))
         self.stackedWidget.addWidget(self.bank_account)
         self.summary = QWidget()
         self.summary.setObjectName(u"summary")
@@ -269,7 +275,7 @@ class Ui_MainWindow(object):
     # setupUi
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
+        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"Expense Tracker", None))
         self.amount_label.setText(QCoreApplication.translate("MainWindow", u"Amount:", None))
         self.add_record_button.setText(QCoreApplication.translate("MainWindow", u"Add Record", None))
         self.clear_button.setText(QCoreApplication.translate("MainWindow", u"Clear", None))
@@ -279,6 +285,7 @@ class Ui_MainWindow(object):
         self.necessity_choose_field.setItemText(0, QCoreApplication.translate("MainWindow", u"Yes", None))
         self.necessity_choose_field.setItemText(1, QCoreApplication.translate("MainWindow", u"No", None))
 
+        self.back_to_summary_income_expense_button.setText(QCoreApplication.translate("MainWindow", u"Back To Summary", None))
         self.apr_label.setText(QCoreApplication.translate("MainWindow", u"APR Rate:", None))
         self.date_label_2.setText(QCoreApplication.translate("MainWindow", u"Date:", None))
         self.deposit_amount_label.setText(QCoreApplication.translate("MainWindow", u"Deposit Amount:", None))
@@ -292,6 +299,7 @@ class Ui_MainWindow(object):
         self.add_bank_button.setText(QCoreApplication.translate("MainWindow", u"Add Bank", None))
         self.bank_name_label.setText(QCoreApplication.translate("MainWindow", u"Bank Name:", None))
         self.apr_radio_button.setText("")
+        self.back_to_summary_bank_account_button.setText(QCoreApplication.translate("MainWindow", u"Back to Summary", None))
         self.summary_label.setText(QCoreApplication.translate("MainWindow", u"Summary", None))
         self.total_necessary_spending_label.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p>Total </p><p>Necessary </p><p>Spending</p></body></html>", None))
         self.total_necessary_spending_number_output.setText(QCoreApplication.translate("MainWindow", u"$0.00 (PlaceHolder)", None))

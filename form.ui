@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Expense Tracker</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QStackedWidget" name="stackedWidget">
@@ -165,6 +165,19 @@
        </property>
       </item>
      </widget>
+     <widget class="QPushButton" name="back_to_summary_income_expense_button">
+      <property name="geometry">
+       <rect>
+        <x>639</x>
+        <y>460</y>
+        <width>131</width>
+        <height>32</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Back To Summary</string>
+      </property>
+     </widget>
     </widget>
     <widget class="QWidget" name="bank_account">
      <widget class="QLabel" name="apr_label">
@@ -211,7 +224,7 @@
        <rect>
         <x>190</x>
         <y>430</y>
-        <width>111</width>
+        <width>121</width>
         <height>32</height>
        </rect>
       </property>
@@ -375,6 +388,19 @@
         <width>111</width>
         <height>21</height>
        </rect>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="back_to_summary_bank_account_button">
+      <property name="geometry">
+       <rect>
+        <x>640</x>
+        <y>470</y>
+        <width>131</width>
+        <height>32</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Back to Summary</string>
       </property>
      </widget>
     </widget>
