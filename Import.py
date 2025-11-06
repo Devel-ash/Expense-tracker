@@ -39,11 +39,11 @@ def Import_bank():
     cal_rate()
 
 
-try:
-    Import_bank()
+#try:
+    #Import_bank()
     #Import_income_expense()
-except Exception as e:
-    print("خطا:", e)
+#except Exception as e:
+    #print("خطا:", e)
 
 
 #schedule.every().day.at("00:00").do(check_income_expense)

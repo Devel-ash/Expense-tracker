@@ -43,8 +43,10 @@ class MainWindow(QMainWindow):
 
 
         self.ui.add_record_button.clicked.connect(self.add_finance_record)
+        self.ui.add_bank_button.clicked.connect(self.add_bank_record)
 
         self.load_finance_data()
+        self.load_bank_data()
         self.load_banks_into_combobox()
 
     def goto_income_expense(self):
@@ -97,8 +99,11 @@ class MainWindow(QMainWindow):
         try:
             connect1 = sqlite3.connect("database.db")
             cursor1 = connect1.cursor()
+            cursor1.execute(""" CREATE TABLE IF NOT EXISTS finance (Id INTEGER PRIMARY KEY AUTOINCREMENT, Bank_Name TEXT NOT NULL, Amount REAL NOT NULL, Date TEXT NOT NULL, Nec INTEGER NOT NULL, Done INTEGER NOT NULL DEFAULT 0)""")
             cursor1.execute(""" INSERT INTO finance (Amount, Bank_Name, Date, Nec) VALUES (?, ?, ?, ?)""", (amount, bank, date, 1 if necessity else 0))
             connect1.commit()
+            import calculate
+            calculate.cal_bank()
             connect1.close()
 
             QMessageBox.information(self, "ثبت موفق", "رکورد جدید با موفقیت افزوده شد.")
@@ -113,6 +118,72 @@ class MainWindow(QMainWindow):
         self.ui.bank_choose_field.setCurrentIndex(0)
         self.ui.necessity_choose_field.setCurrentIndex(0)
         self.ui.date_selector_income_expense.setDate(QDate.currentDate())
+
+
+    #next_page
+
+
+    def add_bank_record(self):
+        name = self.ui.bank_name_entry_field.text().strip()
+        deposit = self.ui.deposit_amount_entry_field.text().strip()
+        date = self.ui.date_selector_bank.date().toString("yyyy-MM-dd")
+        gets_apr = 1 if self.ui.apr_radio_button.isChecked() else 0
+        apr_rate = self.ui.apr_rate_entry_field.text().strip()
+        apr_type = self.ui.apr_choose_field.currentText()
+        days = self.ui.days_spinbox.value()
+
+        if not name or not deposit:
+            QMessageBox.warning(self, "خطا", "نام بانک و مبلغ سپرده الزامی است.")
+            return
+
+        try:
+            deposit = float(deposit_text)
+        except ValueError:
+            QMessageBox.warning(self, "خطا", "لطفاً مبلغ سپرده را به عدد وارد کنید.")
+            return
+        
+
+        try:
+            connect2 = sqlite3.connect("banks.db")
+            cursor2 = connect2.cursor()
+            cursor2.execute(""" CREATE TABLE IF NOT EXISTS bank (Id INTEGER PRIMARY KEY AUTOINCREMENT, Bank_Name TEXT NOT NULL, Deposit REAL NOT NULL, Date TEXT NOT NULL, Gets_APR INTEGER NOT NULL, Rate REAL, Rate_Type TEXT, Days INTEGER)""")
+            cursor2.execute(""" INSERT INTO bank (Bank_Name, Deposit, Date, Gets_APR, Rate, Rate_Type, Days) VALUES (?, ?, ?, ?, ?, ?, ?)""", (name, deposit, date, 1 if gets_apr else 0, apr_rate, apr_type, days))
+            connect2.commit()
+            import calculate
+            calculate.cal_rate()
+            connect2.close()
+
+            QMessageBox.information(self, "ثبت موفق", "بانک جدید با موفقیت ثبت شد.")
+            self.load_bank_data()
+            self.load_banks_into_combobox()
+            self.clear_bank_inputs()
+
+        except Exception as e:
+            QMessageBox.critical(self, "خطا در ثبت بانک", str(e))
+
+    def load_bank_data(self):
+        try:
+            conn = sqlite3.connect("banks.db")
+            cur = conn.cursor()
+            cur.execute("SELECT * FROM bank")
+            rows = cur.fetchall()
+            headers = [desc[0] for desc in cur.description]
+            conn.close()
+
+            model = SQLiteTableModel(rows, headers)
+            self.ui.tableView_6.setModel(model)
+        except Exception as e:
+            print("خطا در بارگذاری banks.db:", e)
+
+    def clear_bank_inputs(self):
+        self.ui.bank_name_entry_field.clear()
+        self.ui.deposit_amount_entry_field.clear()
+        self.ui.apr_rate_entry_field.clear()
+        self.ui.apr_radio_button.setChecked(False)
+        self.ui.apr_choose_field.setCurrentIndex(0)
+        self.ui.days_spinbox.setValue(0)
+        self.ui.date_selector_bank.setDate(QDate.currentDate())
+
 
 
 if __name__ == "__main__":
