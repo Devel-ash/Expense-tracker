@@ -1,9 +1,7 @@
 import sys
 import sqlite3
-
-from PySide6.QtWidgets import QApplication, QMainWindow
-from PySide6.QtCore import Qt, QAbstractTableModel
-
+from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox
+from PySide6.QtCore import Qt, QAbstractTableModel, QDate
 from ui_form import Ui_MainWindow
 
 
@@ -38,23 +36,33 @@ class MainWindow(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
-        #########################
-        self.load_bank_data()
-        self.load_finance_data()
+        self.ui.add_income_expense_button.clicked.connect(self.goto_income_expense)
+        self.ui.add_bank_account_button.clicked.connect(self.goto_bank_account)
 
-    def load_bank_data(self):
+        #self.ui.add_record_button.clicked.connect(self.add_finance_record)
+
+        self.load_finance_data()
+        self.load_banks_into_combobox()
+
+    def goto_income_expense(self):
+        self.ui.stackedWidget.setCurrentWidget(self.ui.income_expense)
+
+    def goto_bank_account(self):
+        self.ui.stackedWidget.setCurrentWidget(self.ui.bank_account)
+
+    def load_banks_into_combobox(self):
         try:
             conn = sqlite3.connect("banks.db")
             cur = conn.cursor()
-            cur.execute("SELECT * FROM bank")
-            rows = cur.fetchall()
-            headers = [desc[0] for desc in cur.description]
+            cur.execute("SELECT bank_name FROM bank")
+            banks = cur.fetchall()
             conn.close()
 
-            model = SQLiteTableModel(rows, headers)
-            self.ui.tableView.setModel(model)
+            self.ui.bank_choose_field.clear()
+            for bank in banks:
+                self.ui.bank_choose_field.addItem(bank[0])
         except Exception as e:
-            print("خطا در بارگذاری banks.db:", e)
+            print("خطا در بارگذاری بانک‌ها:", e)
 
     def load_finance_data(self):
         try:
@@ -66,13 +74,46 @@ class MainWindow(QMainWindow):
             conn.close()
 
             model = SQLiteTableModel(rows, headers)
-            self.ui.tableView_3.setModel(model)
+            self.ui.sql_tableview.setModel(model)
         except Exception as e:
             print("خطا در بارگذاری database.db:", e)
+
+    def add_finance_record(self):
+        amount = self.ui.amount_entry_field.text().strip()
+        bank = self.ui.bank_choose_field.currentText()
+        date = self.ui.date_selector_income_expense.date().toString("yyyy-MM-dd")
+        necessity = self.ui.necessity_choose_field.currentText()
+
+        if not amount or not bank:
+            QMessageBox.warning(self, "خطا", "لطفاً همه فیلدها را پر کنید.")
+            return
+
+        try:
+            conn = sqlite3.connect("database.db")
+            cur = conn.cursor()
+            cur.execute("""
+                INSERT INTO finance (amount, bank, date, necessity)
+                VALUES (?, ?, ?, ?)
+            """, (amount, bank, date, necessity))
+            conn.commit()
+            conn.close()
+
+            QMessageBox.information(self, "ثبت موفق", "رکورد جدید با موفقیت افزوده شد.")
+            self.load_finance_data()
+            self.clear_inputs()
+
+        except Exception as e:
+            QMessageBox.critical(self, "خطا در درج داده", str(e))
+
+    def clear_inputs(self):
+        self.ui.amount_entry_field.clear()
+        self.ui.bank_choose_field.setCurrentIndex(0)
+        self.ui.necessity_choose_field.setCurrentIndex(0)
+        self.ui.date_selector_income_expense.setDate(QDate.currentDate())
 
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    widget = MainWindow()
-    widget.show()
+    window = MainWindow()
+    window.show()
     sys.exit(app.exec())
