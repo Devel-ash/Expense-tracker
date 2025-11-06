@@ -38,8 +38,11 @@ class MainWindow(QMainWindow):
 
         self.ui.add_income_expense_button.clicked.connect(self.goto_income_expense)
         self.ui.add_bank_account_button.clicked.connect(self.goto_bank_account)
+        self.ui.back_to_summary_bank_account_button.clicked.connect(self.goto_summary)
+        self.ui.back_to_summary_income_expense_button.clicked.connect(self.goto_summary)
 
-        #self.ui.add_record_button.clicked.connect(self.add_finance_record)
+
+        self.ui.add_record_button.clicked.connect(self.add_finance_record)
 
         self.load_finance_data()
         self.load_banks_into_combobox()
@@ -49,6 +52,9 @@ class MainWindow(QMainWindow):
 
     def goto_bank_account(self):
         self.ui.stackedWidget.setCurrentWidget(self.ui.bank_account)
+
+    def goto_summary(self):
+        self.ui.stackedWidget.setCurrentWidget(self.ui.summary)
 
     def load_banks_into_combobox(self):
         try:
@@ -89,14 +95,11 @@ class MainWindow(QMainWindow):
             return
 
         try:
-            conn = sqlite3.connect("database.db")
-            cur = conn.cursor()
-            cur.execute("""
-                INSERT INTO finance (amount, bank, date, necessity)
-                VALUES (?, ?, ?, ?)
-            """, (amount, bank, date, necessity))
-            conn.commit()
-            conn.close()
+            connect1 = sqlite3.connect("database.db")
+            cursor1 = connect1.cursor()
+            cursor1.execute(""" INSERT INTO finance (Amount, Bank_Name, Date, Nec) VALUES (?, ?, ?, ?)""", (amount, bank, date, 1 if necessity else 0))
+            connect1.commit()
+            connect1.close()
 
             QMessageBox.information(self, "ثبت موفق", "رکورد جدید با موفقیت افزوده شد.")
             self.load_finance_data()
