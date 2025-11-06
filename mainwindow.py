@@ -1,8 +1,21 @@
 import sys
+import re
 import sqlite3
 from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox
 from PySide6.QtCore import Qt, QAbstractTableModel, QDate
 from ui_form import Ui_MainWindow
+
+connect1 = sqlite3.connect("database.db")
+cursor1 = connect1.cursor()
+
+cursor1.execute(""" CREATE TABLE IF NOT EXISTS finance (Id INTEGER PRIMARY KEY AUTOINCREMENT, Bank_Name TEXT NOT NULL, Amount REAL NOT NULL, Date TEXT NOT NULL, Nec INTEGER NOT NULL, Done INTEGER NOT NULL DEFAULT 0)""")
+connect1.commit()
+
+connect2 = sqlite3.connect("banks.db")
+cursor2 = connect2.cursor()
+
+cursor2.execute(""" CREATE TABLE IF NOT EXISTS bank (Id INTEGER PRIMARY KEY AUTOINCREMENT, Bank_Name TEXT NOT NULL, Deposit REAL NOT NULL, Date TEXT NOT NULL, Gets_APR INTEGER NOT NULL, Rate REAL, Rate_Type TEXT, Days INTEGER)""")
+connect2.commit()
 
 
 class SQLiteTableModel(QAbstractTableModel):
@@ -87,6 +100,10 @@ class MainWindow(QMainWindow):
             print("خطا در بارگذاری database.db:", e)
 
     def add_finance_record(self):
+        amount_pattern = re.compile(r'^-?\d+(\.\d+)?$')
+        #date_pattern = re.compile(r'^\d{4}-\d{2}-\d{2}$')
+        #nec_pattern = re.compile(r'^(yes|no|y|n)$', re.IGNORECASE)
+
         amount = self.ui.amount_entry_field.text().strip()
         bank = self.ui.bank_choose_field.currentText()
         date = self.ui.date_selector_income_expense.date().toString("yyyy-MM-dd")
@@ -94,6 +111,17 @@ class MainWindow(QMainWindow):
 
         if not amount or not bank:
             QMessageBox.warning(self, "خطا", "لطفاً همه فیلدها را پر کنید.")
+            return
+        if not amount_pattern.match(amount):
+            QMessageBox.warning(self, "Invalid amount format!")
+            return
+        try:
+            amount = float(amount)
+        except ValueError:
+            QMessageBox.warning(self, "خطا", "مبلغ را به عدد وارد کنید.")
+            return
+        if amount == 0:
+            QMessageBox.warning(self, "Amount cannot be zero.")
             return
 
         try:
@@ -106,7 +134,10 @@ class MainWindow(QMainWindow):
             calculate.cal_bank()
             connect1.close()
 
-            QMessageBox.information(self, "ثبت موفق", "رکورد جدید با موفقیت افزوده شد.")
+            if amount > 0:
+                QMessageBox.information(self, "ثبت موفق", "درآمد جدید با موفقیت ثبت شد.")
+            else:
+                QMessageBox.information(self, "ثبت موفق", "هزینه جدید با موفقیت ثبت شد.")
             self.load_finance_data()
             self.clear_inputs()
 
@@ -124,25 +155,55 @@ class MainWindow(QMainWindow):
 
 
     def add_bank_record(self):
+        bank_pattern = re.compile(r'^[A-Za-z ]+$')
+        number_pattern = re.compile(r'^\d+(\.\d+)?$')
+        #date_pattern = re.compile(r'^\d{4}-\d{2}-\d{2}$')
+
         name = self.ui.bank_name_entry_field.text().strip()
         deposit = self.ui.deposit_amount_entry_field.text().strip()
         date = self.ui.date_selector_bank.date().toString("yyyy-MM-dd")
-        gets_apr = 1 if self.ui.apr_radio_button.isChecked() else 0
-        apr_rate = self.ui.apr_rate_entry_field.text().strip()
-        apr_type = self.ui.apr_choose_field.currentText()
-        days = self.ui.days_spinbox.value()
+        gets_apr = 1 if self.ui.yesradio.isChecked() else 0
+        if gets_apr == 1:
+            apr_rate = self.ui.apr_rate_entry_field.text().strip()
+            apr_type = self.ui.apr_choose_field.currentText()
+            days = self.ui.days_spinbox.value()
+            if not number_pattern.match(apr_rate):
+                QMessageBox.warning(self, "Invalid APR format! Please enter a number.")
+                return
+            try:
+                apr_rate = float(apr_rate)
+            except ValueError:
+                QMessageBox.warning(self, "APR must be greater than zero.")
+                return
+            if apr_rate <= 0:
+                QMessageBox.warning(self, "APR must be greater than zero.")
+                return
+            if days <= 0:
+                QMessageBox.warning(self, "Days must be greater than zero.")
+                return
+        else:
+            apr_rate = None
+            apr_type = None
+            days = None
 
-        if not name or not deposit:
-            QMessageBox.warning(self, "خطا", "نام بانک و مبلغ سپرده الزامی است.")
+        if not name or not deposit or not gets_apr:
+            QMessageBox.warning(self, "خطا", "نام بانک و مبلغ سپرده و داشتن یا نداشتن سود الزامی است.")
             return
-
+        if not bank_pattern.match(name):
+            QMessageBox.warning(self, "Bank name can only contain letters and spaces.")
+            return
+        if not number_pattern.match(deposit):
+            QMessageBox.warning(self, "Invalid amount format! Please enter a number.")
+            return
         try:
             deposit = float(deposit)
         except ValueError:
             QMessageBox.warning(self, "خطا", "لطفاً مبلغ سپرده را به عدد وارد کنید.")
             return
+        if deposit <= 0:
+            QMessageBox.warning(self, "Amount must be greater than zero.")
+            return
         
-
         try:
             connect2 = sqlite3.connect("banks.db")
             cursor2 = connect2.cursor()
@@ -171,7 +232,7 @@ class MainWindow(QMainWindow):
             conn.close()
 
             model = SQLiteTableModel(rows, headers)
-            self.ui.tableView_6.setModel(model)
+            self.ui.bank_account_tableView.setModel(model)
         except Exception as e:
             print("خطا در بارگذاری banks.db:", e)
 
@@ -179,7 +240,8 @@ class MainWindow(QMainWindow):
         self.ui.bank_name_entry_field.clear()
         self.ui.deposit_amount_entry_field.clear()
         self.ui.apr_rate_entry_field.clear()
-        self.ui.apr_radio_button.setChecked(False)
+        self.ui.yesradio.setChecked(False)
+        self.ui.noradio.setChecked(False)
         self.ui.apr_choose_field.setCurrentIndex(0)
         self.ui.days_spinbox.setValue(0)
         self.ui.date_selector_bank.setDate(QDate.currentDate())
