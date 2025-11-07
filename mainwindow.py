@@ -57,6 +57,8 @@ class MainWindow(QMainWindow):
 
         self.ui.add_record_button.clicked.connect(self.add_finance_record)
         self.ui.add_bank_button.clicked.connect(self.add_bank_record)
+        self.ui.update_balances_button.clicked.connect(self.update_balances)
+
 
         self.load_finance_data()
         self.load_bank_data()
@@ -114,7 +116,7 @@ class MainWindow(QMainWindow):
             QMessageBox.warning(self, "خطا", "لطفاً همه فیلدها را پر کنید.")
             return
         if not amount_pattern.match(amount):
-            QMessageBox.warning(self, "Invalid amount format!")
+            QMessageBox.warning(self, "warning", "Invalid amount format!")
             return
         try:
             amount = float(amount)
@@ -122,7 +124,7 @@ class MainWindow(QMainWindow):
             QMessageBox.warning(self, "خطا", "مبلغ را به عدد وارد کنید.")
             return
         if amount == 0:
-            QMessageBox.warning(self, "Amount cannot be zero.")
+            QMessageBox.warning(self, "warning", "Amount cannot be zero.")
             return
 
         try:
@@ -136,10 +138,6 @@ class MainWindow(QMainWindow):
             self.load_bank_data()
             connect1.close()
 
-            if amount > 0:
-                QMessageBox.information(self, "ثبت موفق", "درآمد جدید با موفقیت ثبت شد.")
-            else:
-                QMessageBox.information(self, "ثبت موفق", "هزینه جدید با موفقیت ثبت شد.")
             self.load_finance_data()
             self.clear_inputs()
             self.update_summary()
@@ -171,32 +169,32 @@ class MainWindow(QMainWindow):
             apr_type = self.ui.apr_choose_field.currentText()
             days = self.ui.days_spinbox.value()
             if not number_pattern.match(apr_rate):
-                QMessageBox.warning(self, "Invalid APR format! Please enter a number.")
+                QMessageBox.warning(self, "warning", "Invalid APR format! Please enter a number.")
                 return
             try:
                 apr_rate = float(apr_rate)
             except ValueError:
-                QMessageBox.warning(self, "APR must be greater than zero.")
+                QMessageBox.warning(self, "warning", "APR must be greater than zero.")
                 return
             if apr_rate <= 0:
-                QMessageBox.warning(self, "APR must be greater than zero.")
+                QMessageBox.warning(self, "warning", "APR must be greater than zero.")
                 return
             if days <= 0:
-                QMessageBox.warning(self, "Days must be greater than zero.")
+                QMessageBox.warning(self, "warning", "Days must be greater than zero.")
                 return
         else:
             apr_rate = None
             apr_type = None
             days = None
 
-        if not name or not deposit or not gets_apr:
-            QMessageBox.warning(self, "خطا", "نام بانک و مبلغ سپرده و داشتن یا نداشتن سود الزامی است.")
+        if not name or not deposit:
+            QMessageBox.warning(self, "خطا", "نام بانک و مبلغ سپرده و الزامی است.")
             return
         if not bank_pattern.match(name):
-            QMessageBox.warning(self, "Bank name can only contain letters and spaces.")
+            QMessageBox.warning(self, "warning", "Bank name can only contain letters and spaces.")
             return
         if not number_pattern.match(deposit):
-            QMessageBox.warning(self, "Invalid amount format! Please enter a number.")
+            QMessageBox.warning(self, "warning", "Invalid amount format! Please enter a number.")
             return
         try:
             deposit = float(deposit)
@@ -204,7 +202,7 @@ class MainWindow(QMainWindow):
             QMessageBox.warning(self, "خطا", "لطفاً مبلغ سپرده را به عدد وارد کنید.")
             return
         if deposit <= 0:
-            QMessageBox.warning(self, "Amount must be greater than zero.")
+            QMessageBox.warning(self, "warning", "Amount must be greater than zero.")
             return
         
         try:
@@ -218,7 +216,6 @@ class MainWindow(QMainWindow):
             self.load_finance_data()
             connect2.close()
 
-            QMessageBox.information(self, "ثبت موفق", "بانک جدید با موفقیت ثبت شد.")
             self.load_bank_data()
             self.load_banks_into_combobox()
             self.clear_bank_inputs()
@@ -271,6 +268,18 @@ class MainWindow(QMainWindow):
         except Exception as e:
             print("خطا در به‌روزرسانی صفحه Summary:", e)
 
+
+
+    def update_balances(self):
+        try:
+            import calculate
+            calculate.check_income_expense()
+            self.load_bank_data()
+            self.load_finance_data()
+            self.update_summary()
+            QMessageBox.information(self, "به‌روزرسانی انجام شد", "وضعیت حساب‌ها و تراکنش‌ها با موفقیت بررسی و به‌روزرسانی شد.")
+        except Exception as e:
+            QMessageBox.critical(self, "خطا در به‌روزرسانی", str(e))
 
 
 if __name__ == "__main__":

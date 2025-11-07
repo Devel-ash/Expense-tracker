@@ -1,4 +1,5 @@
 import sqlite3
+from PySide6.QtWidgets import QMessageBox
 
 connect1 = sqlite3.connect("database.db")
 cursor1 = connect1.cursor()
@@ -61,10 +62,11 @@ def cal_bank ():
     from datetime import date
     today = date.today()
 
-    cursor1.execute("SELECT Id, Amount, Bank_Name, Date FROM finance ORDER BY Id DESC LIMIT 1")
+    cursor1.execute("SELECT Id, Amount, Bank_Name, Date FROM finance WHERE Done = 0 ORDER BY Id DESC LIMIT 1")
     last_row = cursor1.fetchone()
     if not last_row:
         print("هیچ تراکنشی در جدول وجود ندارد.")
+        return
     
     Id, amount, bank_name, target_date_str = last_row
     target_date = date.fromisoformat(target_date_str)
@@ -78,18 +80,20 @@ def cal_bank ():
                 connect2.commit()
                 cursor1.execute("UPDATE finance SET Done = 1 WHERE Amount = ? AND Date = ? AND Bank_name = ? AND Id = ?", (amount, target_date, bank_name, Id))
                 connect1.commit()
-                print(f"موجودی {bank_name} به {new_deposit} در تاریخ {target_date} تغییر یافت")
+                QMessageBox.information(None, "تغییر موجودی" ,f"موجودی {bank_name} به {new_deposit} در تاریخ {target_date} تغییر یافت")
             else:
                 cursor1.execute("DELETE FROM finance WHERE Id = (SELECT Id FROM finance ORDER BY Id DESC LIMIT 1)")
                 connect1.commit()
-                print("موجودی حساب کافی نیست")
+                QMessageBox.warning(None, "هشدار موجودی" ,"موجودی حساب کافی نیست")
         else:
-            print("بانک وجود ندارد")
+            cursor1.execute("DELETE FROM finance WHERE Id = ?", (Id,))
+            connect1.commit()
+            QMessageBox.warning(None, "هشدار حساب", "بانک وجود ندارد")
     else:
         if amount < 0:
-            print(f"هزینه با مقدار {abs(amount)} در بانک {bank_name} به معوقات در تاریخ {target_date} اضافه شد.")
+            QMessageBox.information(None, "هزینه جاری", f"هزینه با مقدار {abs(amount)} در بانک {bank_name} به معوقات در تاریخ {target_date} اضافه شد.")
         else:
-            print(f"درآمد با مقدار {amount} در بانک {bank_name} به معوقات در تاریخ {target_date} اضافه شد.")
+            QMessageBox.information(None, "درآمد جاری", f"درآمد با مقدار {amount} در بانک {bank_name} به معوقات در تاریخ {target_date} اضافه شد.")
     check_income_expense()
 
 
@@ -99,7 +103,7 @@ def check_income_expense():
     cursor1.execute("SELECT Id, Amount, Bank_Name, Date FROM finance WHERE Done = 0")
     rows = cursor1.fetchall()
     if not rows:
-        print("هیچ تراکنشی در جدول وجود ندارد.")
+        print("هیچ تراکنشی برای آپدیت در جدول وجود ندارد.")
 
     today = date.today()
 
@@ -118,11 +122,11 @@ def check_income_expense():
                     connect2.commit()
                     cursor1.execute("UPDATE finance SET Done = 1 WHERE Amount = ? AND Date = ? AND Bank_name = ? AND Id = ?", (amount, target_date, bank_name, Id))
                     connect1.commit()
-                    print(f"موجودی {bank_name} به {new_deposit} در تاریخ {target_date} تغییر یافت")
+                    QMessageBox.information(None, "درآمد جاری", f"موجودی {bank_name} به {new_deposit} در تاریخ {target_date} تغییر یافت")
                 else:
-                    cursor1.execute("DELETE FROM finance WHERE Id = ?", (Id))
+                    cursor1.execute("DELETE FROM finance WHERE Id = ?", (Id,))
                     connect1.commit()
-                    print("موجودی حساب کافی نیست")
+                    QMessageBox.warning(None, "هشدار", "موجودی حساب کافی نیست")
             else:
                 print("بانک وجود ندارد")
         #else:
@@ -136,16 +140,21 @@ def cal_rate():
     cursor2.execute("SELECT * FROM bank WHERE Gets_APR = 1 ORDER BY Id DESC LIMIT 1")
     row = cursor2.fetchone()
     if not row:
-        print("ثبت شد")
+        print("بانک بانرخ سود در ردیف آخر وجود ندارد")
+        QMessageBox.information(None, "ثبت شد" ,"حساب با موفقیت ثبت شد")
     else:
         Id, Bank_Name, Deposit, Date, Gets_APR, Rate, Rate_Type, Days = row
-        if Rate_Type.lower() in ["a", "annually"] and Days >= 365:
-            profit_a = Deposit * (Rate/100)
+        if Rate_Type.lower() in ["a", "annually"]:
+            if Days >= 365:
+                profit_a = Deposit * (Rate/100)
 
-            cursor1.execute("INSERT INTO finance (Bank_Name, Amount, Date, Nec, Done) VALUES (? , ?, Date(?, '+1 year'), 1, 0)", (Bank_Name, profit_a, Date))
-            connect1.commit()
-            print (f"سود حساب در بانک {Bank_Name} 365 روز دیگر به حسابتان واریز خواهد شد.")
-
+                cursor1.execute("INSERT INTO finance (Bank_Name, Amount, Date, Nec, Done) VALUES (? , ?, Date(?, '+1 year'), 1, 0)", (Bank_Name, profit_a, Date))
+                connect1.commit()
+                QMessageBox.information(None, "سود جاری", f"سود حساب در بانک {Bank_Name} 365 روز دیگر به حسابتان واریز خواهد شد.")
+            else:
+                cursor2.execute("DELETE FROM bank WHERE Id = ?", (Id,))
+                connect2.commit()
+                QMessageBox.warning(None, "هشدار تعداد روز", "تعداد روز سپرده گذاری باید بیشتر از ۳۶۵ روز باشد")
         else:
             cursor2.execute("SELECT * FROM bank WHERE Gets_APR = 1 ORDER BY Id DESC LIMIT 1")
             row = cursor2.fetchone()
@@ -165,7 +174,7 @@ def cal_rate():
                 cursor1.execute(""" INSERT INTO finance (Bank_Name, Amount, Date, Nec, Done) VALUES (?, ?, DATE(?, '+' || ? || ' days'), 1, 0) """, (Bank_Name, profit_extra, Date, full_months * 30 + extra_days))
             
             connect1.commit()
-            print (f"سود حساب در بانک {Bank_Name} به مدت {Days} روز به صورت ماهانه واریز خواهد شد.")
+            QMessageBox.information(None, "سود جاری", f"سود حساب در بانک {Bank_Name} به مدت {Days} روز به صورت ماهانه واریز خواهد شد.")
             
     check_income_expense()
 
