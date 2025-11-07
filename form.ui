@@ -46,9 +46,9 @@
      <widget class="QPushButton" name="add_record_button">
       <property name="geometry">
        <rect>
-        <x>40</x>
+        <x>29</x>
         <y>460</y>
-        <width>100</width>
+        <width>131</width>
         <height>32</height>
        </rect>
       </property>
@@ -59,10 +59,10 @@
      <widget class="QLabel" name="necessity_label">
       <property name="geometry">
        <rect>
-        <x>40</x>
-        <y>370</y>
+        <x>30</x>
+        <y>360</y>
         <width>71</width>
-        <height>16</height>
+        <height>21</height>
        </rect>
       </property>
       <property name="text">
@@ -72,8 +72,8 @@
      <widget class="QLabel" name="date_label">
       <property name="geometry">
        <rect>
-        <x>40</x>
-        <y>310</y>
+        <x>30</x>
+        <y>280</y>
         <width>58</width>
         <height>16</height>
        </rect>
@@ -98,10 +98,10 @@
      <widget class="QComboBox" name="bank_choose_field">
       <property name="geometry">
        <rect>
-        <x>30</x>
-        <y>220</y>
+        <x>20</x>
+        <y>200</y>
         <width>271</width>
-        <height>41</height>
+        <height>31</height>
        </rect>
       </property>
       <property name="placeholderText">
@@ -111,8 +111,8 @@
      <widget class="QLineEdit" name="amount_entry_field">
       <property name="geometry">
        <rect>
-        <x>40</x>
-        <y>120</y>
+        <x>30</x>
+        <y>100</y>
         <width>251</width>
         <height>21</height>
        </rect>
@@ -131,13 +131,16 @@
       <property name="geometry">
        <rect>
         <x>140</x>
-        <y>310</y>
+        <y>280</y>
         <width>91</width>
         <height>22</height>
        </rect>
       </property>
       <property name="displayFormat">
        <string>M/d/yyyy</string>
+      </property>
+      <property name="calendarPopup">
+       <bool>true</bool>
       </property>
      </widget>
      <widget class="QTableView" name="sql_tableview">
@@ -153,10 +156,10 @@
      <widget class="QComboBox" name="necessity_choose_field">
       <property name="geometry">
        <rect>
-        <x>130</x>
+        <x>140</x>
         <y>360</y>
         <width>111</width>
-        <height>41</height>
+        <height>31</height>
        </rect>
       </property>
       <item>
@@ -344,9 +347,9 @@
      <widget class="QPushButton" name="add_bank_button">
       <property name="geometry">
        <rect>
-        <x>40</x>
+        <x>30</x>
         <y>470</y>
-        <width>111</width>
+        <width>131</width>
         <height>32</height>
        </rect>
       </property>
