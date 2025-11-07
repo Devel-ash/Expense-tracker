@@ -5,4 +5,6 @@ Expense-tracker
 
 instructions to launch:
 
-launch mainwindow.py
+1. install pyside6
+
+2. launch mainwindow.py
