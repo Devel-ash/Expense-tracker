@@ -100,7 +100,7 @@
        <rect>
         <x>140</x>
         <y>170</y>
-        <width>151</width>
+        <width>91</width>
         <height>21</height>
        </rect>
       </property>
@@ -111,9 +111,9 @@
      <widget class="QLineEdit" name="amount_entry_field">
       <property name="geometry">
        <rect>
-        <x>150</x>
+        <x>140</x>
         <y>90</y>
-        <width>131</width>
+        <width>91</width>
         <height>21</height>
        </rect>
       </property>
@@ -158,7 +158,7 @@
        <rect>
         <x>140</x>
         <y>330</y>
-        <width>111</width>
+        <width>91</width>
         <height>21</height>
        </rect>
       </property>
@@ -284,7 +284,7 @@
        <rect>
         <x>170</x>
         <y>340</y>
-        <width>121</width>
+        <width>91</width>
         <height>21</height>
        </rect>
       </property>
@@ -349,7 +349,7 @@
        <rect>
         <x>170</x>
         <y>410</y>
-        <width>71</width>
+        <width>91</width>
         <height>22</height>
        </rect>
       </property>
@@ -375,7 +375,7 @@
        <rect>
         <x>170</x>
         <y>170</y>
-        <width>121</width>
+        <width>111</width>
         <height>22</height>
        </rect>
       </property>
@@ -417,7 +417,7 @@
        <rect>
         <x>170</x>
         <y>290</y>
-        <width>111</width>
+        <width>91</width>
         <height>21</height>
        </rect>
       </property>
