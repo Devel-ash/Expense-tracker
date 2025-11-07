@@ -179,6 +179,15 @@ def cal_rate():
     check_income_expense()
 
 
+def undo_finance_effects(bank_name, amount):
+    import sqlite3
+    conn = sqlite3.connect("banks.db")
+    cur = conn.cursor()
+    cur.execute("UPDATE bank SET Deposit = Deposit - ? WHERE Bank_Name = ?", (amount, bank_name))
+    conn.commit()
+    conn.close()
+
+
 Income , Expense = arrange_income(amounts)
 Income_cal = cal_income(Income)
 Expense_cal = cal_income(Expense)

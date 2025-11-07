@@ -58,7 +58,8 @@ class MainWindow(QMainWindow):
         self.ui.add_record_button.clicked.connect(self.add_finance_record)
         self.ui.add_bank_button.clicked.connect(self.add_bank_record)
         self.ui.update_balances_button.clicked.connect(self.update_balances)
-
+        self.ui.delete_record_income_expense_button.clicked.connect(self.delete_finance_record)
+        self.ui.delete_record_bank_button.clicked.connect(self.delete_bank_record)
 
         self.load_finance_data()
         self.load_bank_data()
@@ -145,6 +146,60 @@ class MainWindow(QMainWindow):
         except Exception as e:
             QMessageBox.critical(self, "خطا در درج داده", str(e))
 
+    def delete_finance_record(self):
+        amount_text = self.ui.amount_entry_field.text().strip()
+        bank = self.ui.bank_choose_field.currentText()
+        date = self.ui.date_selector_income_expense.date().toString("yyyy-MM-dd")
+
+        if not amount_text or not bank:
+            QMessageBox.warning(self, "خطا", "برای حذف رکورد، لطفاً بانک، مبلغ و تاریخ را وارد کنید.")
+            return
+
+        try:
+            amount = float(amount_text)
+        except ValueError:
+            QMessageBox.warning(self, "خطا", "مبلغ باید عدد باشد.")
+            return
+
+        try:
+            conn = sqlite3.connect("database.db")
+            cur = conn.cursor()
+
+            cur.execute("""
+                SELECT Id, Done FROM finance
+                WHERE ABS(Amount - ?) < 0.0001 AND Bank_Name = ? AND Date = ?
+                ORDER BY Id DESC LIMIT 1
+            """, (amount, bank, date))
+            record = cur.fetchone()
+
+            if not record:
+                QMessageBox.warning(self, "یافت نشد", "هیچ رکوردی با این مشخصات پیدا نشد.")
+                conn.close()
+                return
+
+            record_id, done_status = record
+
+            cur.execute("DELETE FROM finance WHERE Id = ?", (record_id,))
+            conn.commit()
+            conn.close()
+
+            if done_status == 1:
+                import calculate
+                if hasattr(calculate, "undo_finance_effects"):
+                    calculate.undo_finance_effects(bank, amount)
+                QMessageBox.information(self, "حذف موفق", "رکورد حذف شد و تغییرات بانکی بازگردانده شد.")
+            else:
+                QMessageBox.information(self, "حذف موفق", "رکورد حذف شد (هنوز اعمال نشده بود).")
+
+            self.load_finance_data()
+            self.update_summary()
+
+        except Exception as e:
+            QMessageBox.critical(self, "خطا در حذف رکورد", str(e))
+
+
+
+
     def clear_inputs(self):
         self.ui.amount_entry_field.clear()
         self.ui.bank_choose_field.setCurrentIndex(0)
@@ -223,6 +278,78 @@ class MainWindow(QMainWindow):
 
         except Exception as e:
             QMessageBox.critical(self, "خطا در ثبت بانک", str(e))
+
+    def delete_bank_record(self):
+        name = self.ui.bank_name_entry_field.text().strip()
+
+        if not name:
+            QMessageBox.warning(self, "خطا", "لطفاً نام بانک را وارد یا انتخاب کنید.")
+            return
+
+        try:
+            conn_bank = sqlite3.connect("banks.db")
+            cur_bank = conn_bank.cursor()
+
+            conn_finance = sqlite3.connect("database.db")
+            cur_finance = conn_finance.cursor()
+
+            cur_bank.execute("SELECT Id FROM bank WHERE Bank_Name = ?", (name,))
+            bank_record = cur_bank.fetchone()
+
+            if not bank_record:
+                QMessageBox.warning(self, "یافت نشد", f"بانکی با نام «{name}» در پایگاه داده وجود ندارد.")
+                conn_bank.close()
+                conn_finance.close()
+                return
+
+            cur_finance.execute("SELECT COUNT(*) FROM finance WHERE Bank_Name = ?", (name,))
+            finance_count = cur_finance.fetchone()[0]
+
+            msg = f"آیا از حذف بانک «{name}» مطمئن هستید؟"
+            if finance_count > 0:
+                msg += f"\n\n⚠️ هشدار: {finance_count} تراکنش مرتبط در جدول مالی نیز حذف خواهند شد."
+
+            confirm = QMessageBox.question(
+                self,
+                "تأیید حذف بانک",
+                msg,
+                QMessageBox.Yes | QMessageBox.No,
+                QMessageBox.No
+            )
+
+            if confirm == QMessageBox.No:
+                conn_bank.close()
+                conn_finance.close()
+                return
+
+            cur_bank.execute("DELETE FROM bank WHERE Bank_Name = ?", (name,))
+            conn_bank.commit()
+
+            if finance_count > 0:
+                cur_finance.execute("DELETE FROM finance WHERE Bank_Name = ?", (name,))
+                conn_finance.commit()
+
+            conn_bank.close()
+            conn_finance.close()
+
+            QMessageBox.information(
+                self,
+                "حذف موفق",
+                f"بانک «{name}» و تمام تراکنش‌های مرتبط با آن با موفقیت حذف شدند."
+                if finance_count > 0
+                else f"بانک «{name}» با موفقیت حذف شد."
+            )
+
+            self.load_bank_data()
+            self.load_banks_into_combobox()
+            self.load_finance_data()
+            self.update_summary()
+            self.clear_bank_inputs()
+
+        except Exception as e:
+            QMessageBox.critical(self, "خطا در حذف بانک", str(e))
+
+
 
     def load_bank_data(self):
         try:
