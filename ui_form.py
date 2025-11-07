@@ -50,7 +50,7 @@ class Ui_MainWindow(object):
         self.bank_label.setGeometry(QRect(30, 180, 58, 16))
         self.bank_choose_field = QComboBox(self.income_expense)
         self.bank_choose_field.setObjectName(u"bank_choose_field")
-        self.bank_choose_field.setGeometry(QRect(20, 200, 271, 31))
+        self.bank_choose_field.setGeometry(QRect(20, 200, 271, 21))
         self.amount_entry_field = QLineEdit(self.income_expense)
         self.amount_entry_field.setObjectName(u"amount_entry_field")
         self.amount_entry_field.setGeometry(QRect(30, 100, 251, 21))
@@ -65,7 +65,7 @@ class Ui_MainWindow(object):
         self.necessity_choose_field.addItem("")
         self.necessity_choose_field.addItem("")
         self.necessity_choose_field.setObjectName(u"necessity_choose_field")
-        self.necessity_choose_field.setGeometry(QRect(140, 360, 111, 31))
+        self.necessity_choose_field.setGeometry(QRect(140, 360, 111, 21))
         self.back_to_summary_income_expense_button = QPushButton(self.income_expense)
         self.back_to_summary_income_expense_button.setObjectName(u"back_to_summary_income_expense_button")
         self.back_to_summary_income_expense_button.setGeometry(QRect(200, 460, 131, 32))
@@ -94,7 +94,7 @@ class Ui_MainWindow(object):
         self.apr_choose_field.addItem("")
         self.apr_choose_field.addItem("")
         self.apr_choose_field.setObjectName(u"apr_choose_field")
-        self.apr_choose_field.setGeometry(QRect(170, 340, 121, 32))
+        self.apr_choose_field.setGeometry(QRect(170, 340, 121, 21))
         self.apr_type_label = QLabel(self.bank_account)
         self.apr_type_label.setObjectName(u"apr_type_label")
         self.apr_type_label.setGeometry(QRect(40, 350, 71, 16))
@@ -182,12 +182,13 @@ class Ui_MainWindow(object):
         self.total_necessary_spending_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.total_necessary_spending_number_output = QLabel(self.total_necessary_spending_box)
         self.total_necessary_spending_number_output.setObjectName(u"total_necessary_spending_number_output")
-        self.total_necessary_spending_number_output.setGeometry(QRect(0, 210, 151, 16))
+        self.total_necessary_spending_number_output.setGeometry(QRect(20, 210, 101, 20))
         self.total_necessary_spending_number_output.setStyleSheet(u"QLabel {\n"
 "    color: #1B5E20;\n"
 "    font-weight: bold;\n"
 "    font-size: 18pt;\n"
 "}")
+        self.total_necessary_spending_number_output.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.total_unnecessary_spending_box = QWidget(self.summary_container)
         self.total_unnecessary_spending_box.setObjectName(u"total_unnecessary_spending_box")
         self.total_unnecessary_spending_box.setGeometry(QRect(200, 0, 161, 271))
@@ -197,12 +198,13 @@ class Ui_MainWindow(object):
 "")
         self.total_unnecessary_spendingnumber_holder = QLabel(self.total_unnecessary_spending_box)
         self.total_unnecessary_spendingnumber_holder.setObjectName(u"total_unnecessary_spendingnumber_holder")
-        self.total_unnecessary_spendingnumber_holder.setGeometry(QRect(0, 210, 161, 16))
+        self.total_unnecessary_spendingnumber_holder.setGeometry(QRect(30, 210, 101, 21))
         self.total_unnecessary_spendingnumber_holder.setStyleSheet(u"QLabel {\n"
 "    color: #C62828;\n"
 "    font-weight: bold;\n"
 "    font-size: 18pt;\n"
 "}")
+        self.total_unnecessary_spendingnumber_holder.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.total_unnecessary_spending_label = QLabel(self.total_unnecessary_spending_box)
         self.total_unnecessary_spending_label.setObjectName(u"total_unnecessary_spending_label")
         self.total_unnecessary_spending_label.setGeometry(QRect(10, 30, 141, 101))
@@ -222,12 +224,13 @@ class Ui_MainWindow(object):
 "")
         self.total_revenue_number_output = QLabel(self.total_revenue_box)
         self.total_revenue_number_output.setObjectName(u"total_revenue_number_output")
-        self.total_revenue_number_output.setGeometry(QRect(0, 210, 151, 16))
+        self.total_revenue_number_output.setGeometry(QRect(30, 210, 101, 20))
         self.total_revenue_number_output.setStyleSheet(u"QLabel {\n"
 "    color: #0D47A1;\n"
 "    font-weight: bold;\n"
 "    font-size: 18pt;\n"
 "}")
+        self.total_revenue_number_output.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.total_revenue_label = QLabel(self.total_revenue_box)
         self.total_revenue_label.setObjectName(u"total_revenue_label")
         self.total_revenue_label.setGeometry(QRect(10, 30, 141, 101))
@@ -247,12 +250,13 @@ class Ui_MainWindow(object):
 "")
         self.total_spending_number_holder = QLabel(self.total_spending_box)
         self.total_spending_number_holder.setObjectName(u"total_spending_number_holder")
-        self.total_spending_number_holder.setGeometry(QRect(0, 210, 161, 16))
+        self.total_spending_number_holder.setGeometry(QRect(30, 210, 101, 20))
         self.total_spending_number_holder.setStyleSheet(u"QLabel {\n"
 "    color: #212121;\n"
 "    font-weight: bold;\n"
 "    font-size: 18pt;\n"
 "}")
+        self.total_spending_number_holder.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.total_spending_label = QLabel(self.total_spending_box)
         self.total_spending_label.setObjectName(u"total_spending_label")
         self.total_spending_label.setGeometry(QRect(10, 30, 141, 101))
