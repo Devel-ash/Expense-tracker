@@ -564,9 +564,9 @@ border-radius: 8px; }
         <property name="geometry">
          <rect>
           <x>20</x>
-          <y>210</y>
+          <y>189</y>
           <width>101</width>
-          <height>20</height>
+          <height>41</height>
          </rect>
         </property>
         <property name="styleSheet">
@@ -603,9 +603,9 @@ border-radius: 8px; }
         <property name="geometry">
          <rect>
           <x>30</x>
-          <y>210</y>
+          <y>190</y>
           <width>101</width>
-          <height>21</height>
+          <height>41</height>
          </rect>
         </property>
         <property name="styleSheet">
@@ -672,9 +672,9 @@ border-radius: 8px; }
         <property name="geometry">
          <rect>
           <x>30</x>
-          <y>210</y>
+          <y>189</y>
           <width>101</width>
-          <height>20</height>
+          <height>41</height>
          </rect>
         </property>
         <property name="styleSheet">
@@ -741,9 +741,9 @@ border-radius: 8px; }
         <property name="geometry">
          <rect>
           <x>30</x>
-          <y>210</y>
+          <y>189</y>
           <width>101</width>
-          <height>20</height>
+          <height>41</height>
          </rect>
         </property>
         <property name="styleSheet">
