@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>804</width>
-    <height>580</height>
+    <height>581</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -34,7 +34,7 @@
       <property name="geometry">
        <rect>
         <x>30</x>
-        <y>120</y>
+        <y>90</y>
         <width>111</width>
         <height>21</height>
        </rect>
@@ -46,7 +46,7 @@
      <widget class="QPushButton" name="add_record_button">
       <property name="geometry">
        <rect>
-        <x>29</x>
+        <x>20</x>
         <y>460</y>
         <width>131</width>
         <height>32</height>
@@ -60,7 +60,7 @@
       <property name="geometry">
        <rect>
         <x>30</x>
-        <y>360</y>
+        <y>330</y>
         <width>71</width>
         <height>21</height>
        </rect>
@@ -73,7 +73,7 @@
       <property name="geometry">
        <rect>
         <x>30</x>
-        <y>280</y>
+        <y>250</y>
         <width>58</width>
         <height>16</height>
        </rect>
@@ -86,7 +86,7 @@
       <property name="geometry">
        <rect>
         <x>30</x>
-        <y>200</y>
+        <y>170</y>
         <width>58</width>
         <height>21</height>
        </rect>
@@ -99,7 +99,7 @@
       <property name="geometry">
        <rect>
         <x>140</x>
-        <y>200</y>
+        <y>170</y>
         <width>151</width>
         <height>21</height>
        </rect>
@@ -112,7 +112,7 @@
       <property name="geometry">
        <rect>
         <x>150</x>
-        <y>120</y>
+        <y>90</y>
         <width>131</width>
         <height>21</height>
        </rect>
@@ -131,7 +131,7 @@
       <property name="geometry">
        <rect>
         <x>140</x>
-        <y>280</y>
+        <y>250</y>
         <width>91</width>
         <height>22</height>
        </rect>
@@ -146,10 +146,10 @@
      <widget class="QTableView" name="sql_tableview">
       <property name="geometry">
        <rect>
-        <x>398</x>
-        <y>100</y>
+        <x>400</x>
+        <y>60</y>
         <width>351</width>
-        <height>341</height>
+        <height>371</height>
        </rect>
       </property>
      </widget>
@@ -157,7 +157,7 @@
       <property name="geometry">
        <rect>
         <x>140</x>
-        <y>360</y>
+        <y>330</y>
         <width>111</width>
         <height>21</height>
        </rect>
@@ -176,7 +176,7 @@
      <widget class="QPushButton" name="back_to_summary_income_expense_button">
       <property name="geometry">
        <rect>
-        <x>200</x>
+        <x>620</x>
         <y>460</y>
         <width>131</width>
         <height>32</height>
@@ -184,6 +184,19 @@
       </property>
       <property name="text">
        <string>Back To Summary</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="delete_record_income_expense_button">
+      <property name="geometry">
+       <rect>
+        <x>200</x>
+        <y>460</y>
+        <width>131</width>
+        <height>32</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Delete Record</string>
       </property>
      </widget>
     </widget>
@@ -230,7 +243,7 @@
      <widget class="QPushButton" name="update_balances_button">
       <property name="geometry">
        <rect>
-        <x>600</x>
+        <x>400</x>
         <y>470</y>
         <width>121</width>
         <height>32</height>
@@ -336,7 +349,7 @@
        <rect>
         <x>170</x>
         <y>410</y>
-        <width>42</width>
+        <width>71</width>
         <height>22</height>
        </rect>
       </property>
@@ -409,13 +422,13 @@
        </rect>
       </property>
       <property name="placeholderText">
-       <string>5%</string>
+       <string>5</string>
       </property>
      </widget>
      <widget class="QPushButton" name="back_to_summary_bank_account_button">
       <property name="geometry">
        <rect>
-        <x>190</x>
+        <x>590</x>
         <y>470</y>
         <width>131</width>
         <height>32</height>
@@ -474,6 +487,19 @@
         <bool>true</bool>
        </property>
       </widget>
+     </widget>
+     <widget class="QPushButton" name="delete_record_bank_button">
+      <property name="geometry">
+       <rect>
+        <x>200</x>
+        <y>470</y>
+        <width>131</width>
+        <height>32</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Back To Summary</string>
+      </property>
      </widget>
     </widget>
     <widget class="QWidget" name="summary">
@@ -542,7 +568,7 @@ border-radius: 8px; }
         <property name="font">
          <font>
           <family>Arial</family>
-          <pointsize>18</pointsize>
+          <pointsize>12</pointsize>
           <fontweight>DemiBold</fontweight>
          </font>
         </property>
@@ -640,7 +666,7 @@ border-radius: 8px; }
         <property name="font">
          <font>
           <family>Arial</family>
-          <pointsize>18</pointsize>
+          <pointsize>12</pointsize>
           <fontweight>DemiBold</fontweight>
          </font>
         </property>
@@ -711,7 +737,7 @@ border-radius: 8px; }
         <property name="font">
          <font>
           <family>Arial</family>
-          <pointsize>18</pointsize>
+          <pointsize>12</pointsize>
           <fontweight>DemiBold</fontweight>
          </font>
         </property>
@@ -782,7 +808,7 @@ border-radius: 8px; }
         <property name="font">
          <font>
           <family>Arial</family>
-          <pointsize>18</pointsize>
+          <pointsize>12</pointsize>
           <fontweight>DemiBold</fontweight>
          </font>
         </property>
