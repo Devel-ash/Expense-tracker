@@ -542,15 +542,13 @@ border-radius: 8px; }
         <property name="font">
          <font>
           <family>Arial</family>
-          <pointsize>12</pointsize>
+          <pointsize>18</pointsize>
           <fontweight>DemiBold</fontweight>
          </font>
         </property>
         <property name="styleSheet">
          <string notr="true">QLabel {
     color: #2E7D32;
-    font-weight: 600;
-    font-size: 12pt;
 }</string>
         </property>
         <property name="text">
@@ -569,11 +567,15 @@ border-radius: 8px; }
           <height>41</height>
          </rect>
         </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+          <bold>true</bold>
+         </font>
+        </property>
         <property name="styleSheet">
          <string notr="true">QLabel {
     color: #1B5E20;
-    font-weight: bold;
-    font-size: 18pt;
 }</string>
         </property>
         <property name="text">
@@ -608,11 +610,15 @@ border-radius: 8px; }
           <height>41</height>
          </rect>
         </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+          <bold>true</bold>
+         </font>
+        </property>
         <property name="styleSheet">
          <string notr="true">QLabel {
     color: #C62828;
-    font-weight: bold;
-    font-size: 18pt;
 }</string>
         </property>
         <property name="text">
@@ -634,15 +640,13 @@ border-radius: 8px; }
         <property name="font">
          <font>
           <family>Arial</family>
-          <pointsize>12</pointsize>
+          <pointsize>18</pointsize>
           <fontweight>DemiBold</fontweight>
          </font>
         </property>
         <property name="styleSheet">
          <string notr="true">QLabel {
     color: #B71C1C;
-    font-weight: 600;
-    font-size: 12pt;
 }</string>
         </property>
         <property name="text">
@@ -677,11 +681,15 @@ border-radius: 8px; }
           <height>41</height>
          </rect>
         </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+          <bold>true</bold>
+         </font>
+        </property>
         <property name="styleSheet">
          <string notr="true">QLabel {
     color: #0D47A1;
-    font-weight: bold;
-    font-size: 18pt;
 }</string>
         </property>
         <property name="text">
@@ -703,15 +711,13 @@ border-radius: 8px; }
         <property name="font">
          <font>
           <family>Arial</family>
-          <pointsize>12</pointsize>
+          <pointsize>18</pointsize>
           <fontweight>DemiBold</fontweight>
          </font>
         </property>
         <property name="styleSheet">
          <string notr="true">QLabel {
     color: #1565C0;
-    font-weight: 600;
-    font-size: 12pt;
 }</string>
         </property>
         <property name="text">
@@ -746,11 +752,15 @@ border-radius: 8px; }
           <height>41</height>
          </rect>
         </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+          <bold>true</bold>
+         </font>
+        </property>
         <property name="styleSheet">
          <string notr="true">QLabel {
     color: #212121;
-    font-weight: bold;
-    font-size: 18pt;
 }</string>
         </property>
         <property name="text">
@@ -772,15 +782,13 @@ border-radius: 8px; }
         <property name="font">
          <font>
           <family>Arial</family>
-          <pointsize>12</pointsize>
+          <pointsize>18</pointsize>
           <fontweight>DemiBold</fontweight>
          </font>
         </property>
         <property name="styleSheet">
          <string notr="true">QLabel {
     color: #424242;
-    font-weight: 600;
-    font-size: 12pt;
 }</string>
         </property>
         <property name="text">

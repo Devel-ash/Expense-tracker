@@ -171,22 +171,22 @@ class Ui_MainWindow(object):
         self.total_necessary_spending_label.setGeometry(QRect(10, 30, 131, 101))
         font1 = QFont()
         font1.setFamilies([u"Arial"])
-        font1.setPointSize(12)
+        font1.setPointSize(18)
         font1.setWeight(QFont.DemiBold)
         self.total_necessary_spending_label.setFont(font1)
         self.total_necessary_spending_label.setStyleSheet(u"QLabel {\n"
 "    color: #2E7D32;\n"
-"    font-weight: 600;\n"
-"    font-size: 12pt;\n"
 "}")
         self.total_necessary_spending_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.total_necessary_spending_number_output = QLabel(self.total_necessary_spending_box)
         self.total_necessary_spending_number_output.setObjectName(u"total_necessary_spending_number_output")
         self.total_necessary_spending_number_output.setGeometry(QRect(0, 189, 151, 41))
+        font2 = QFont()
+        font2.setPointSize(10)
+        font2.setBold(True)
+        self.total_necessary_spending_number_output.setFont(font2)
         self.total_necessary_spending_number_output.setStyleSheet(u"QLabel {\n"
 "    color: #1B5E20;\n"
-"    font-weight: bold;\n"
-"    font-size: 18pt;\n"
 "}")
         self.total_necessary_spending_number_output.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.total_unnecessary_spending_box = QWidget(self.summary_container)
@@ -199,10 +199,9 @@ class Ui_MainWindow(object):
         self.total_unnecessary_spendingnumber_holder = QLabel(self.total_unnecessary_spending_box)
         self.total_unnecessary_spendingnumber_holder.setObjectName(u"total_unnecessary_spendingnumber_holder")
         self.total_unnecessary_spendingnumber_holder.setGeometry(QRect(0, 190, 161, 41))
+        self.total_unnecessary_spendingnumber_holder.setFont(font2)
         self.total_unnecessary_spendingnumber_holder.setStyleSheet(u"QLabel {\n"
 "    color: #C62828;\n"
-"    font-weight: bold;\n"
-"    font-size: 18pt;\n"
 "}")
         self.total_unnecessary_spendingnumber_holder.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.total_unnecessary_spending_label = QLabel(self.total_unnecessary_spending_box)
@@ -211,8 +210,6 @@ class Ui_MainWindow(object):
         self.total_unnecessary_spending_label.setFont(font1)
         self.total_unnecessary_spending_label.setStyleSheet(u"QLabel {\n"
 "    color: #B71C1C;\n"
-"    font-weight: 600;\n"
-"    font-size: 12pt;\n"
 "}")
         self.total_unnecessary_spending_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.total_revenue_box = QWidget(self.summary_container)
@@ -225,10 +222,9 @@ class Ui_MainWindow(object):
         self.total_revenue_number_output = QLabel(self.total_revenue_box)
         self.total_revenue_number_output.setObjectName(u"total_revenue_number_output")
         self.total_revenue_number_output.setGeometry(QRect(0, 189, 161, 41))
+        self.total_revenue_number_output.setFont(font2)
         self.total_revenue_number_output.setStyleSheet(u"QLabel {\n"
 "    color: #0D47A1;\n"
-"    font-weight: bold;\n"
-"    font-size: 18pt;\n"
 "}")
         self.total_revenue_number_output.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.total_revenue_label = QLabel(self.total_revenue_box)
@@ -237,8 +233,6 @@ class Ui_MainWindow(object):
         self.total_revenue_label.setFont(font1)
         self.total_revenue_label.setStyleSheet(u"QLabel {\n"
 "    color: #1565C0;\n"
-"    font-weight: 600;\n"
-"    font-size: 12pt;\n"
 "}")
         self.total_revenue_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.total_spending_box = QWidget(self.summary_container)
@@ -251,10 +245,9 @@ class Ui_MainWindow(object):
         self.total_spending_number_holder = QLabel(self.total_spending_box)
         self.total_spending_number_holder.setObjectName(u"total_spending_number_holder")
         self.total_spending_number_holder.setGeometry(QRect(0, 189, 161, 41))
+        self.total_spending_number_holder.setFont(font2)
         self.total_spending_number_holder.setStyleSheet(u"QLabel {\n"
 "    color: #212121;\n"
-"    font-weight: bold;\n"
-"    font-size: 18pt;\n"
 "}")
         self.total_spending_number_holder.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.total_spending_label = QLabel(self.total_spending_box)
@@ -263,8 +256,6 @@ class Ui_MainWindow(object):
         self.total_spending_label.setFont(font1)
         self.total_spending_label.setStyleSheet(u"QLabel {\n"
 "    color: #424242;\n"
-"    font-weight: 600;\n"
-"    font-size: 12pt;\n"
 "}")
         self.total_spending_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.add_income_expense_button = QPushButton(self.summary)
