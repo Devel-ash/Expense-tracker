@@ -563,9 +563,9 @@ border-radius: 8px; }
        <widget class="QLabel" name="total_necessary_spending_number_output">
         <property name="geometry">
          <rect>
-          <x>20</x>
+          <x>0</x>
           <y>189</y>
-          <width>101</width>
+          <width>151</width>
           <height>41</height>
          </rect>
         </property>
@@ -602,9 +602,9 @@ border-radius: 8px; }
        <widget class="QLabel" name="total_unnecessary_spendingnumber_holder">
         <property name="geometry">
          <rect>
-          <x>30</x>
+          <x>0</x>
           <y>190</y>
-          <width>101</width>
+          <width>161</width>
           <height>41</height>
          </rect>
         </property>
@@ -671,9 +671,9 @@ border-radius: 8px; }
        <widget class="QLabel" name="total_revenue_number_output">
         <property name="geometry">
          <rect>
-          <x>30</x>
+          <x>0</x>
           <y>189</y>
-          <width>101</width>
+          <width>161</width>
           <height>41</height>
          </rect>
         </property>
@@ -740,9 +740,9 @@ border-radius: 8px; }
        <widget class="QLabel" name="total_spending_number_holder">
         <property name="geometry">
          <rect>
-          <x>30</x>
+          <x>0</x>
           <y>189</y>
-          <width>101</width>
+          <width>161</width>
           <height>41</height>
          </rect>
         </property>

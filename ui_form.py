@@ -182,7 +182,7 @@ class Ui_MainWindow(object):
         self.total_necessary_spending_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.total_necessary_spending_number_output = QLabel(self.total_necessary_spending_box)
         self.total_necessary_spending_number_output.setObjectName(u"total_necessary_spending_number_output")
-        self.total_necessary_spending_number_output.setGeometry(QRect(20, 189, 101, 41))
+        self.total_necessary_spending_number_output.setGeometry(QRect(0, 189, 151, 41))
         self.total_necessary_spending_number_output.setStyleSheet(u"QLabel {\n"
 "    color: #1B5E20;\n"
 "    font-weight: bold;\n"
@@ -198,7 +198,7 @@ class Ui_MainWindow(object):
 "")
         self.total_unnecessary_spendingnumber_holder = QLabel(self.total_unnecessary_spending_box)
         self.total_unnecessary_spendingnumber_holder.setObjectName(u"total_unnecessary_spendingnumber_holder")
-        self.total_unnecessary_spendingnumber_holder.setGeometry(QRect(30, 190, 101, 41))
+        self.total_unnecessary_spendingnumber_holder.setGeometry(QRect(0, 190, 161, 41))
         self.total_unnecessary_spendingnumber_holder.setStyleSheet(u"QLabel {\n"
 "    color: #C62828;\n"
 "    font-weight: bold;\n"
@@ -224,7 +224,7 @@ class Ui_MainWindow(object):
 "")
         self.total_revenue_number_output = QLabel(self.total_revenue_box)
         self.total_revenue_number_output.setObjectName(u"total_revenue_number_output")
-        self.total_revenue_number_output.setGeometry(QRect(30, 189, 101, 41))
+        self.total_revenue_number_output.setGeometry(QRect(0, 189, 161, 41))
         self.total_revenue_number_output.setStyleSheet(u"QLabel {\n"
 "    color: #0D47A1;\n"
 "    font-weight: bold;\n"
@@ -250,7 +250,7 @@ class Ui_MainWindow(object):
 "")
         self.total_spending_number_holder = QLabel(self.total_spending_box)
         self.total_spending_number_holder.setObjectName(u"total_spending_number_holder")
-        self.total_spending_number_holder.setGeometry(QRect(30, 189, 101, 41))
+        self.total_spending_number_holder.setGeometry(QRect(0, 189, 161, 41))
         self.total_spending_number_holder.setStyleSheet(u"QLabel {\n"
 "    color: #212121;\n"
 "    font-weight: bold;\n"
