@@ -1,3 +1,8 @@
 # Expense-tracker
-Expense-tracker private repo
-gui branch
+
+Expense-tracker
+
+
+instructions to launch:
+
+launch mainwindow.py
