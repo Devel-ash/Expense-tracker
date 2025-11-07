@@ -334,7 +334,7 @@ class Ui_MainWindow(object):
         self.gets_apr_group.setTitle("")
         self.yesradio.setText(QCoreApplication.translate("MainWindow", u"yes", None))
         self.noradio.setText(QCoreApplication.translate("MainWindow", u"no", None))
-        self.delete_record_bank_button.setText(QCoreApplication.translate("MainWindow", u"Back To Summary", None))
+        self.delete_record_bank_button.setText(QCoreApplication.translate("MainWindow", u"Delete Record", None))
         self.summary_label.setText(QCoreApplication.translate("MainWindow", u"Summary", None))
         self.total_necessary_spending_label.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p>Total </p><p>Necessary </p><p>Spending</p></body></html>", None))
         self.total_necessary_spending_number_output.setText(QCoreApplication.translate("MainWindow", u"$0.00 (PlaceHolder)", None))

@@ -498,7 +498,7 @@
        </rect>
       </property>
       <property name="text">
-       <string>Back To Summary</string>
+       <string>Delete Record</string>
       </property>
      </widget>
     </widget>
