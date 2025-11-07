@@ -35,7 +35,7 @@ class Ui_MainWindow(object):
         self.income_expense.setObjectName(u"income_expense")
         self.amount_label = QLabel(self.income_expense)
         self.amount_label.setObjectName(u"amount_label")
-        self.amount_label.setGeometry(QRect(30, 70, 111, 16))
+        self.amount_label.setGeometry(QRect(30, 120, 111, 21))
         self.add_record_button = QPushButton(self.income_expense)
         self.add_record_button.setObjectName(u"add_record_button")
         self.add_record_button.setGeometry(QRect(29, 460, 131, 32))
@@ -47,13 +47,13 @@ class Ui_MainWindow(object):
         self.date_label.setGeometry(QRect(30, 280, 58, 16))
         self.bank_label = QLabel(self.income_expense)
         self.bank_label.setObjectName(u"bank_label")
-        self.bank_label.setGeometry(QRect(30, 180, 58, 16))
+        self.bank_label.setGeometry(QRect(30, 200, 58, 21))
         self.bank_choose_field = QComboBox(self.income_expense)
         self.bank_choose_field.setObjectName(u"bank_choose_field")
-        self.bank_choose_field.setGeometry(QRect(20, 200, 271, 21))
+        self.bank_choose_field.setGeometry(QRect(140, 200, 151, 21))
         self.amount_entry_field = QLineEdit(self.income_expense)
         self.amount_entry_field.setObjectName(u"amount_entry_field")
-        self.amount_entry_field.setGeometry(QRect(30, 100, 251, 21))
+        self.amount_entry_field.setGeometry(QRect(150, 120, 131, 21))
         self.date_selector_income_expense = QDateEdit(self.income_expense)
         self.date_selector_income_expense.setObjectName(u"date_selector_income_expense")
         self.date_selector_income_expense.setGeometry(QRect(140, 280, 91, 22))
@@ -182,7 +182,7 @@ class Ui_MainWindow(object):
         self.total_necessary_spending_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.total_necessary_spending_number_output = QLabel(self.total_necessary_spending_box)
         self.total_necessary_spending_number_output.setObjectName(u"total_necessary_spending_number_output")
-        self.total_necessary_spending_number_output.setGeometry(QRect(20, 210, 101, 20))
+        self.total_necessary_spending_number_output.setGeometry(QRect(20, 189, 101, 41))
         self.total_necessary_spending_number_output.setStyleSheet(u"QLabel {\n"
 "    color: #1B5E20;\n"
 "    font-weight: bold;\n"
@@ -198,7 +198,7 @@ class Ui_MainWindow(object):
 "")
         self.total_unnecessary_spendingnumber_holder = QLabel(self.total_unnecessary_spending_box)
         self.total_unnecessary_spendingnumber_holder.setObjectName(u"total_unnecessary_spendingnumber_holder")
-        self.total_unnecessary_spendingnumber_holder.setGeometry(QRect(30, 210, 101, 21))
+        self.total_unnecessary_spendingnumber_holder.setGeometry(QRect(30, 190, 101, 41))
         self.total_unnecessary_spendingnumber_holder.setStyleSheet(u"QLabel {\n"
 "    color: #C62828;\n"
 "    font-weight: bold;\n"
@@ -224,7 +224,7 @@ class Ui_MainWindow(object):
 "")
         self.total_revenue_number_output = QLabel(self.total_revenue_box)
         self.total_revenue_number_output.setObjectName(u"total_revenue_number_output")
-        self.total_revenue_number_output.setGeometry(QRect(30, 210, 101, 20))
+        self.total_revenue_number_output.setGeometry(QRect(30, 189, 101, 41))
         self.total_revenue_number_output.setStyleSheet(u"QLabel {\n"
 "    color: #0D47A1;\n"
 "    font-weight: bold;\n"
@@ -250,7 +250,7 @@ class Ui_MainWindow(object):
 "")
         self.total_spending_number_holder = QLabel(self.total_spending_box)
         self.total_spending_number_holder.setObjectName(u"total_spending_number_holder")
-        self.total_spending_number_holder.setGeometry(QRect(30, 210, 101, 20))
+        self.total_spending_number_holder.setGeometry(QRect(30, 189, 101, 41))
         self.total_spending_number_holder.setStyleSheet(u"QLabel {\n"
 "    color: #212121;\n"
 "    font-weight: bold;\n"
@@ -285,7 +285,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.stackedWidget.setCurrentIndex(2)
+        self.stackedWidget.setCurrentIndex(0)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
