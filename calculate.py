@@ -137,7 +137,7 @@ def check_income_expense():
 
 
 def cal_rate():
-    cursor2.execute("SELECT * FROM bank WHERE Gets_APR = 1 ORDER BY Id DESC LIMIT 1")
+    cursor2.execute(""" SELECT * FROM bank WHERE Id = (SELECT MAX(Id) FROM bank) AND Gets_APR = 1 """)
     row = cursor2.fetchone()
     if not row:
         print("بانک بانرخ سود در ردیف آخر وجود ندارد")
