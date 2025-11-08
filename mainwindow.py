@@ -4,6 +4,8 @@ import sqlite3
 from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox
 from PySide6.QtCore import Qt, QAbstractTableModel, QDate
 from ui_form import Ui_MainWindow
+from PySide6.QtCore import QTimer, QTime
+import datetime
 
 connect1 = sqlite3.connect("database.db")
 cursor1 = connect1.cursor()
@@ -65,6 +67,7 @@ class MainWindow(QMainWindow):
         self.load_bank_data()
         self.update_summary()
         self.load_banks_into_combobox()
+        self.start_daily_check()
 
     def goto_income_expense(self):
         self.ui.stackedWidget.setCurrentWidget(self.ui.income_expense)
@@ -407,6 +410,37 @@ class MainWindow(QMainWindow):
             QMessageBox.information(self, "به‌روزرسانی انجام شد", "وضعیت حساب‌ها و تراکنش‌ها با موفقیت بررسی و به‌روزرسانی شد.")
         except Exception as e:
             QMessageBox.critical(self, "خطا در به‌روزرسانی", str(e))
+
+    def start_daily_check(self):
+        self.run_daily_check(initial=True)
+
+        now = QTime.currentTime()
+        target_time = QTime(0, 0) 
+        seconds_until_midnight = now.secsTo(target_time)
+        if seconds_until_midnight <= 0:
+            seconds_until_midnight += 24 * 3600
+
+        QTimer.singleShot(seconds_until_midnight * 1000, self.run_daily_check)
+
+    def run_daily_check(self, initial=False):
+        try:
+            import calculate
+            calculate.check_income_expense()
+            self.load_bank_data()
+            self.load_finance_data()
+            self.update_summary()
+
+            if initial:
+                print(f"[{datetime.datetime.now()}] بررسی اولیه انجام شد (هنگام باز شدن برنامه).")
+            else:
+                print(f"[{datetime.datetime.now()}] بررسی روزانه در نیمه‌شب انجام شد.")
+
+        except Exception as e:
+            print("خطا در بررسی تراکنش‌ها:", e)
+
+        if not initial:
+            QTimer.singleShot(24 * 3600 * 1000, self.run_daily_check)
+
 
 
 if __name__ == "__main__":
